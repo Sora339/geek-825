@@ -1,22 +1,28 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/lib/firebase/client";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-
-import { authOptions } from "@/lib/next-auth/options";
-
 import About from "./components/top/about/about";
 import HowToPlay from "./components/top/howToPlay/howToPlay";
 import Footer from "./layout/footer/footer";
 import Header from "./layout/header/header";
 
-export default async function Home() {
+export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
-  const session = await getServerSession(authOptions)
-
-  //sessionがあったら、myPageに飛ばす
-  if(session){
-    redirect("/myPage")
-  }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        router.push("/myPage"); // Redirect to myPage.tsx if the user is logged in
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   return (
     <div>

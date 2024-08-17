@@ -1,4 +1,4 @@
-import { Games, User } from '@prisma/client';
+
 
 import ScoreRow from './scoreRow';
 

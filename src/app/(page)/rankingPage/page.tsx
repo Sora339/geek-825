@@ -1,39 +1,134 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+"use client";
 
-import ButtonContainer from "@/app/components/rankingPage/buttonContainer";
-import RankingTable from "@/app/components/rankingPage/rankingTable";
-import Footer from "@/app/layout/footer/footer";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import { db, auth } from "@/lib/firebase/client";
+import { onAuthStateChanged } from "firebase/auth";
 import Header from "@/app/layout/header/header";
-import { authOptions } from "@/lib/next-auth/options";
+import Footer from "@/app/layout/footer/footer";
 
-const RankingPage = async () => {
+type GameResult = {
+  userId: string;
+  userName: string;
+  score: number;
+  timestamp: Date;
+};
 
-  const session = await getServerSession(authOptions)
+const Ranking = () => {
+  const [rankings, setRankings] = useState<GameResult[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [highScore, setHighScore] = useState<number | null>(null);
 
-//   //セッションがなければ、ログインページにリダイレクト
-//   if (!session) {
-//     redirect("/auth/login")
-//   }
+  useEffect(() => {
+    const fetchCurrentUser = () => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setCurrentUserId(user.uid);
+          fetchUserHighScore(user.uid); // ユーザーのハイスコアを取得
+        } else {
+          setCurrentUserId(null);
+        }
+      });
+      return () => unsubscribe();
+    };
+
+    const fetchUserHighScore = async (userId: string) => {
+      try {
+        const q = query(
+          collection(db, "gameResults"),
+          where("userId", "==", userId),
+          orderBy("score", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const highestScore = querySnapshot.docs[0].data().score;
+          setHighScore(highestScore);
+        }
+      } catch (error) {
+        console.error("Error fetching user high score: ", error);
+      }
+    };
+
+    const fetchRankings = async () => {
+      try {
+        const q = query(
+          collection(db, "gameResults"),
+          orderBy("score", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        const fetchedRankings: GameResult[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          fetchedRankings.push({
+            userId: data.userId,
+            userName: data.userName,
+            score: data.score,
+            timestamp: data.timestamp.toDate(),
+          });
+        });
+
+        setRankings(fetchedRankings);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching rankings: ", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+    fetchRankings();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex h-[calc(100vh-80px-80px)] flex-col items-center bg-gray-50 font-sans">
-        <div className="mt-8  px-6">
-          <h2 className="mb-2 text-center text-2xl">あなたのハイスコア</h2>
-          <p className="mb-6 text-center text-5xl font-bold"></p>
-          <ButtonContainer />
-          <section className="rounded-xl bg-[#D0E8FF] px-8 py-6 shadow-md">
-            <h3 className="mb-4 text-lg font-semibold">総合ランキング</h3>
-            <div className="h-[360px] overflow-x-auto">
-            </div>
-          </section>
-        </div>
+      <div className="container mx-auto p-4 flex-grow">
+        {highScore !== null && (
+          <div className="bg-blue-100 p-4 mb-4 rounded text-center">
+            <h2 className="text-xl font-bold">
+              あなたのハイスコア: {highScore}
+            </h2>
+          </div>
+        )}
+        <h1 className="text-3xl font-bold mb-4">ランキング</h1>
+        <table className="min-w-full bg-white">
+          <thead>
+            <tr>
+              <th className="py-2">順位</th>
+              <th className="py-2">ユーザー名</th>
+              <th className="py-2">スコア</th>
+              <th className="py-2">日付</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rankings.map((ranking, index) => (
+              <tr
+                key={index}
+                className={
+                  ranking.userId === currentUserId ? "bg-yellow-300" : ""
+                }
+              >
+                <td className="border px-4 py-2">{index + 1}</td>
+                <td className="border px-4 py-2">{ranking.userName}</td>
+                <td className="border px-4 py-2">{ranking.score}</td>
+                <td className="border px-4 py-2">
+                  {ranking.timestamp.toLocaleString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <Footer />
     </div>
   );
 };
 
-export default RankingPage;
+export default Ranking;

@@ -110,7 +110,7 @@ const GalleryCard = ({
   }, [bookIds]);
 
   const handleCardClick = () => {
-    router.push(`/gallary/${userId}`);
+    router.push(`/gallery/${userId}`);
   };
 
   return (

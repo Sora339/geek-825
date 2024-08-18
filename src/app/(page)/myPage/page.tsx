@@ -122,7 +122,13 @@ const MyPage = () => {
               </Button>
             </Link>
           </div>
-
+          <div className="pb-7">
+            <Link href="/gallery">
+              <Button className="h-max bg-purple-700 shadow-md hover:bg-purple-900">
+                <p className="text-2xl font-bold">本棚ギャラリー</p>
+              </Button>
+            </Link>
+          </div>
           <div className="pb-7">
             <Link href="/rankingPage">
               <Button className="h-max bg-orange-700 shadow-md hover:bg-orange-900">

@@ -46,11 +46,11 @@ const UserBookshelf = () => {
             const fetchedBooks = await Promise.all(bookPromises);
             setBooks(fetchedBooks.filter((book) => book !== null) as Book[]);
           } else {
-            router.push("/gallary");
+            router.push("/gallery");
           }
         } else {
           console.error("Invalid userId:", bookshelfUserId);
-          router.push("/gallary");
+          router.push("/gallery");
         }
       } catch (error) {
         console.error("Error fetching user bookshelf:", error);

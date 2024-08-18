@@ -11,13 +11,17 @@ const LoginButton: React.FC = () => {
       const user = result.user;
 
       if (user) {
-        // Firestoreにユーザー情報を保存
-        await setDoc(doc(db, "users", user.uid), {
-          id: user.uid,
-          name: user.displayName || "Anonymous",
-          email: user.email || "No Email",
-          photoURL: user.photoURL || "",
-        });
+        // Firestoreにユーザー情報を保存 (mergeオプションを使用)
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            id: user.uid,
+            name: user.displayName || "Anonymous",
+            email: user.email || "No Email",
+            photoURL: user.photoURL || "",
+          },
+          { merge: true } // 既存データを維持しつつ新しいデータを追加
+        );
         console.log("User data saved to Firestore:", user.uid);
       }
     } catch (error) {

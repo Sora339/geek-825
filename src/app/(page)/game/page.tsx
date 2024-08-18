@@ -23,13 +23,16 @@ export default function Home() {
     message, // メッセージを取得
   } = useBooks();
 
-  const [timeLeft, setTimeLeft] = useState<number>(180); // 3分間のタイマー（秒単位）
+  const [timeLeft, setTimeLeft] = useState<number>(10); // 3分間のタイマー（秒単位）
   const [showResult, setShowResult] = useState<boolean>(false); // モーダル表示状態を管理
+  const [userId, setUserId] = useState<string | null>(null); // userIdの状態
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
+      if (user) {
+        setUserId(user.uid); // ユーザーIDを状態に保存
+      } else {
         router.push("/");
       }
     });
@@ -87,7 +90,7 @@ export default function Home() {
               <p className="mb-4">残り時間: {formatTime(timeLeft)}</p>{" "}
               {/* タイマーの表示 */}
               {requestedBook && (
-                <div className="mb-4 h-[100px]">
+                <div className="mb-4 h-[140px]">
                   <h2 className="text-xl">
                     利用者No.{users}の希望:
                     <br /> {requestedBook.volumeInfo.title}
@@ -106,7 +109,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="w-[1000px]">
+            <div>
               <Bookshelf
                 books={books}
                 onLendBook={handleLendBook}
@@ -116,8 +119,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {showResult && (
-        <Result score={points} books={books} />
+      {showResult && userId && (
+        <Result score={points} books={books} userId={userId} />
       )}
     </div>
   );

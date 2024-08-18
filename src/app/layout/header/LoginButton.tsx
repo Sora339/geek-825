@@ -2,6 +2,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "@/lib/firebase/client";
 import { Button } from "@/components/ui/button";
 import { doc, setDoc } from "firebase/firestore";
+import Image from "next/image";
 
 const LoginButton: React.FC = () => {
   const handleLogin = async () => {
@@ -29,7 +30,17 @@ const LoginButton: React.FC = () => {
     }
   };
 
-  return <Button onClick={handleLogin}>ログイン</Button>;
+  return (
+    <button onClick={handleLogin}>
+      <Image
+        src="image/login.svg"
+        alt="google"
+        width={200}
+        height={40}
+        className="rounded-full"
+      ></Image>
+    </button>
+  );
 };
 
 export default LoginButton;

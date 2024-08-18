@@ -1,15 +1,16 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import About from "./components/top/about/about";
-import HowToPlay from "./components/top/howToPlay/howToPlay";
-import Footer from "./layout/footer/footer";
-import Header from "./layout/header/header";
-import StartButton from "./components/top/startButton";
+import { Kaisei_Decol } from "next/font/google";
+import Link from "next/link";
+
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -26,24 +27,29 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div>
-      <Header />
-      <div className="flex min-h-screen flex-col items-center font-sans">
-        <div className="mb-8 flex w-full flex-col items-center">
-          <Image
-            src="/image/bg_1.webp"
-            alt="High-tech computer setup"
-            className="h-[80vh] w-full object-cover"
-            width="1000"
-            height="500"
-            priority
-          />
-          <About />
-          <HowToPlay />
-          <StartButton />
-        </div>
+    <div
+      className={`relative bg-[url('/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.40)] bg-blend-overlay h-[100vh] flex items-center justify-center text-white ${Kaisei.className}`}
+    >
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-40 z-10"></div>
+      <div className="relative z-20 text-center px-4">
+        <h1 className="text-2xl md:text-3xl font-bold mb-4">
+          新感覚書籍探索ゲーム
+        </h1>
+        <h2 className="text-5xl md:text-7xl mb-12">Maclay Rush</h2>
+        <p className="text-xl md:text-2xl">会員証を手に取ってはじめる</p>
       </div>
-      <Footer />
+      <div className="absolute right-[20%] bottom-[10%] z-20">
+        <Link href={"/auth"}>
+          <div className="rotate-12 h-[120px] w-[200px] bg-[#dddddd] text-black text-sm rounded-lg px-6 py-3 cursor-pointer hover:bg-gray-400 inline-block">
+            マクレイ図書館会員証
+            <br />
+            <p className="mt-4 text-center">不思議な本の世界へ</p>
+          </div>
+        </Link>
+      </div>
+      <p className="absolute bottom-4 left-0 right-0 text-center text-sm md:text-base">
+        ©2024 created by マクレイ図書館職員
+      </p>
     </div>
   );
 }

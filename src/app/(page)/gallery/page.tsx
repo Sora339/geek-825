@@ -8,6 +8,12 @@ import { useRouter } from "next/navigation";
 import { Book } from "@/../src/types/game"; // 指定されたBook型をインポート
 import Header from "@/app/layout/header/header";
 import Footer from "@/app/layout/footer/footer";
+import { Kaisei_Decol } from "next/font/google";
+
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 interface User {
   id: string;
@@ -48,23 +54,27 @@ const Gallery = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="container mx-auto p-4 flex-grow">
-        <h1 className="text-3xl font-bold mb-4">本棚ギャラリー</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {userLikes.map((user, index) => (
-            <GalleryCard
-              key={index}
-              userId={user.id}
-              userName={user.name}
-              userPhotoURL={user.photoURL}
-              bookIds={user.likes}
-            />
-          ))}
+    <div
+      className={`bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+    >
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="container mx-auto p-4 flex-grow">
+          <h1 className="text-3xl font-bold mb-4 text-white">本棚ギャラリー</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {userLikes.map((user, index) => (
+              <GalleryCard
+                key={index}
+                userId={user.id}
+                userName={user.name}
+                userPhotoURL={user.photoURL}
+                bookIds={user.likes}
+              />
+            ))}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };
@@ -115,7 +125,7 @@ const GalleryCard = ({
 
   return (
     <div
-      className="border p-4 rounded shadow-md cursor-pointer"
+      className="border p-4 rounded shadow-md cursor-pointer bg-white"
       onClick={handleCardClick}
     >
       <div className="flex items-center mb-4">

@@ -6,6 +6,8 @@ import { db } from "@/lib/firebase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Book } from "@/../src/types/game"; // 指定されたBook型をインポート
+import Header from "@/app/layout/header/header";
+import Footer from "@/app/layout/footer/footer";
 
 interface User {
   id: string;
@@ -14,7 +16,7 @@ interface User {
   likes: string[];
 }
 
-const Gallary = () => {
+const Gallery = () => {
   const [userLikes, setUserLikes] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -24,7 +26,7 @@ const Gallary = () => {
         const usersRef = collection(db, "users");
         const q = query(usersRef, where("public", "==", true), limit(30));
         const querySnapshot = await getDocs(q);
-        const users = querySnapshot.docs.map(doc => ({
+        const users = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name || "Anonymous",
           photoURL: doc.data().photoURL || "/default-avatar.png",
@@ -46,24 +48,28 @@ const Gallary = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">ギャラリー</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {userLikes.map((user, index) => (
-          <GallaryCard
-            key={index}
-            userId={user.id}
-            userName={user.name}
-            userPhotoURL={user.photoURL}
-            bookIds={user.likes}
-          />
-        ))}
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <div className="container mx-auto p-4 flex-grow">
+        <h1 className="text-3xl font-bold mb-4">本棚ギャラリー</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {userLikes.map((user, index) => (
+            <GalleryCard
+              key={index}
+              userId={user.id}
+              userName={user.name}
+              userPhotoURL={user.photoURL}
+              bookIds={user.likes}
+            />
+          ))}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };
 
-const GallaryCard = ({
+const GalleryCard = ({
   userId,
   userName,
   userPhotoURL,
@@ -142,4 +148,4 @@ const GallaryCard = ({
   );
 };
 
-export default Gallary;
+export default Gallery;

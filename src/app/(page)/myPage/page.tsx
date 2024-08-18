@@ -89,57 +89,61 @@ const MyPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="container mx-auto p-4 flex-grow">
-        {userData ? (
-          <div className="text-center">
-            <img
-              src={userData.photoURL}
-              alt={userData.name}
-              className="w-24 h-24 rounded-full mx-auto mb-4"
-            />
-            <h1 className="text-2xl font-bold">{userData.name}</h1>
-            {totalScore !== null && (
-              <p className="text-xl mt-4">これまでの総合スコア: {totalScore}</p>
-            )}
-          </div>
-        ) : (
-          <div>User data not found.</div>
-        )}
-        <div className="flex justify-center gap-3 pt-5">
-          <div>
-            <Link href="/game">
-              <Button className="h-max bg-green-400 shadow-md hover:bg-green-500">
-                <p className="text-2xl font-bold">スタート</p>
-              </Button>
-            </Link>
-          </div>
-          <div className="pb-7">
-            <Link href="/mylikes">
-              <Button className="h-max bg-blue-700 shadow-md hover:bg-blue-900">
-                <p className="text-2xl font-bold">My本棚</p>
-              </Button>
-            </Link>
-          </div>
-          <div className="pb-7">
-            <Link href="/gallery">
-              <Button className="h-max bg-purple-700 shadow-md hover:bg-purple-900">
-                <p className="text-2xl font-bold">本棚ギャラリー</p>
-              </Button>
-            </Link>
-          </div>
-          <div className="pb-7">
-            <Link href="/rankingPage">
-              <Button className="h-max bg-orange-700 shadow-md hover:bg-orange-900">
-                <p className="text-2xl font-bold">ランキング</p>
-              </Button>
-            </Link>
+    <div className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay h-[100vh]">
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="container mx-auto p-4 flex-grow">
+          {userData ? (
+            <div className="text-center">
+              <img
+                src={userData.photoURL}
+                alt={userData.name}
+                className="w-24 h-24 rounded-full mx-auto mb-4"
+              />
+              <h1 className="text-2xl font-bold">{userData.name}</h1>
+              {totalScore !== null && (
+                <p className="text-xl mt-4">
+                  これまでの総合スコア: {totalScore}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div>User data not found.</div>
+          )}
+          <div className="flex justify-center gap-3 pt-5">
+            <div>
+              <Link href="/game">
+                <Button className="h-max bg-green-400 shadow-md hover:bg-green-500">
+                  <p className="text-2xl font-bold">スタート</p>
+                </Button>
+              </Link>
+            </div>
+            <div className="pb-7">
+              <Link href="/mylikes">
+                <Button className="h-max bg-blue-700 shadow-md hover:bg-blue-900">
+                  <p className="text-2xl font-bold">My本棚</p>
+                </Button>
+              </Link>
+            </div>
+            <div className="pb-7">
+              <Link href="/gallery">
+                <Button className="h-max bg-purple-700 shadow-md hover:bg-purple-900">
+                  <p className="text-2xl font-bold">本棚ギャラリー</p>
+                </Button>
+              </Link>
+            </div>
+            <div className="pb-7">
+              <Link href="/rankingPage">
+                <Button className="h-max bg-orange-700 shadow-md hover:bg-orange-900">
+                  <p className="text-2xl font-bold">ランキング</p>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

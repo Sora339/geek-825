@@ -11,6 +11,12 @@ import { IoHeartSharp } from "react-icons/io5";
 import { FaLock, FaUnlockAlt } from "react-icons/fa";
 import Header from "@/app/layout/header/header";
 import Footer from "@/app/layout/footer/footer";
+import { Kaisei_Decol } from "next/font/google";
+
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 const MyLikes = () => {
   const [likedBooks, setLikedBooks] = useState<Book[]>([]);
@@ -110,72 +116,74 @@ const MyLikes = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="container mx-auto p-4 flex-grow">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold">My本棚</h1>
-          <button onClick={togglePublic} className="text-xl">
-            {isPublic ? (
-              <div className="flex items-center gap-2">
-                <FaUnlockAlt className="text-green-500" />
-                <span>公開する</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <FaLock className="text-red-500" />
-                <span>公開しない</span>
-              </div>
-            )}
-          </button>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {likedBooks.map((book) => (
-            <div key={book.id} className="border p-2 rounded">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">
-                  {book.volumeInfo.title}
-                </h2>
-                <button onClick={() => handleLike(book.id)}>
-                  <div className="flex gap-1">
-                    <p>お気に入り</p>
-                    <IoHeartSharp className="text-red-500 text-2xl" />
-                  </div>
-                </button>
-              </div>
-              {book.volumeInfo.imageLinks?.smallThumbnail && (
-                <div className="flex justify-center">
-                  <Image
-                    src={book.volumeInfo.imageLinks.smallThumbnail}
-                    alt={book.volumeInfo.title}
-                    width={128}
-                    height={200}
-                    objectFit="cover"
-                    className="rounded mt-2 mb-2"
-                  />
+    <div className={`bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="container mx-auto p-4 flex-grow">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold text-white">My本棚</h1>
+            <button onClick={togglePublic} className="text-xl">
+              {isPublic ? (
+                <div className="flex items-center gap-2">
+                  <FaUnlockAlt className="text-green-500" />
+                  <span className="text-white">公開する</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <FaLock className="text-red-500" />
+                  <span className="text-white">公開しない</span>
                 </div>
               )}
-              <p className="mb-2">
-                {book.volumeInfo.description?.replace(/<wbr>/g, "")}
-              </p>
-              {book.saleInfo?.saleability === "FOR_SALE" &&
-                book.saleInfo.buyLink && (
-                  <div className="text-right">
-                    <a
-                      href={book.saleInfo.buyLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 ml-auto"
-                    >
-                      購入リンク
-                    </a>
+            </button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {likedBooks.map((book) => (
+              <div key={book.id} className="border p-2 rounded h-[400px] overflow-y-scroll bg-white">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">
+                    {book.volumeInfo.title}
+                  </h2>
+                  <button onClick={() => handleLike(book.id)}>
+                    <div className="flex gap-1">
+                      <p>お気に入り</p>
+                      <IoHeartSharp className="text-red-500 text-2xl" />
+                    </div>
+                  </button>
+                </div>
+                {book.volumeInfo.imageLinks?.smallThumbnail && (
+                  <div className="flex justify-center">
+                    <Image
+                      src={book.volumeInfo.imageLinks.smallThumbnail}
+                      alt={book.volumeInfo.title}
+                      width={128}
+                      height={200}
+                      objectFit="cover"
+                      className="rounded mt-2 mb-2"
+                    />
                   </div>
                 )}
-            </div>
-          ))}
+                <p className="mb-2">
+                  {book.volumeInfo.description?.replace(/<wbr>/g, "")}
+                </p>
+                {book.saleInfo?.saleability === "FOR_SALE" &&
+                  book.saleInfo.buyLink && (
+                    <div className="text-right">
+                      <a
+                        href={book.saleInfo.buyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 ml-auto"
+                      >
+                        購入リンク
+                      </a>
+                    </div>
+                  )}
+              </div>
+            ))}
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

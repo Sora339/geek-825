@@ -13,7 +13,7 @@ const LogOutButton = () => {
     }
 
     return (
-        <Button onClick={logOut} className="w-full">ログアウト</Button>
+        <Button onClick={logOut} className="bg-[#808080] text-[#ffffff]  w-full">ログアウト</Button>
     )
 }
 

@@ -1,14 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { db, auth } from '../../lib/firebase/client';
-import { collection, addDoc } from 'firebase/firestore';
-import { Book } from '@/../src/types/game';  // 共通の型をインポート
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect, useState } from "react";
+import { db, auth } from "../../lib/firebase/client";
+import { collection, addDoc } from "firebase/firestore";
+import { Book } from "@/../src/types/game"; // 共通の型をインポート
+import { onAuthStateChanged, User } from "firebase/auth";
 
 const useBooks = () => {
   const [books, setBooks] = useState<Book[]>([]);
-  const [borrowedBooks, setBorrowedBooks] = useState<{ [key: string]: boolean }>({});
+  const [borrowedBooks, setBorrowedBooks] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [users, setUsers] = useState<number>(0);
   const [points, setPoints] = useState<number>(0);
   const [requestedBook, setRequestedBook] = useState<Book | null>(null);
@@ -29,15 +31,18 @@ const useBooks = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const randomStartIndex = Math.floor(Math.random() * 800); // 0から1000までのランダムな開始インデックスを生成
-      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=8&startIndex=${randomStartIndex}&orderBy=newest&langRestrict=ja`);
+      const randomStartIndex = Math.floor(Math.random() * 400); // 0から1000までのランダムな開始インデックスを生成
+      console.log(randomStartIndex)
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=8&startIndex=${randomStartIndex}&orderBy=newest&langRestrict=ja`
+      );
       const data = await response.json();
       setBooks(data.items || []);
       setRandomRequestedBook(data.items || []);
       setUsers(1); // ゲームが開始されたときに最初のユーザーをセット
     };
 
-    fetchBooks().catch(error => {
+    fetchBooks().catch((error) => {
       console.error("Error fetching books:", error);
       setBooks([]);
     });
@@ -51,56 +56,69 @@ const useBooks = () => {
   const handleLendBook = (bookId: string) => {
     if (!requestedBook) return;
 
-    if (borrowedBooks[bookId]) {
-      // 本がすでに貸出中の場合、20ポイント減点し、メッセージを表示
-      setPoints(prev => prev - 20);
-      displayMessage('この本はすでに貸出中です！');
-      return;
-    }
-
     if (bookId === requestedBook.id) {
-      setPoints(prev => prev + 10);
-      displayMessage('正しく貸し出せました。');  // 正しく貸出ができた場合のメッセージ
+      if (borrowedBooks[bookId]) {
+        // 本がすでに貸出中の場合、20ポイント減点し、メッセージを表示
+        setPoints((prev) => prev - 20);
+        displayMessage("この本はすでに貸出中です！"); //ネガティブレスポンス
+      } else {
+        setPoints((prev) => prev + 10);
+        displayMessage("正しく貸し出せました。"); //ポジティブレスポンス
+      }
     } else {
-      setPoints(prev => prev - 20);
-      displayMessage('正しく貸し出せませんでした。');
+      setPoints((prev) => prev - 20);
+      displayMessage("誤った本が選択されました。"); //ネガティブレスポンス
+      return;
     }
 
     const returnTime = Math.random() * 25000 + 5000;
 
-    setBorrowedBooks(prev => ({ ...prev, [bookId]: true }));
+    setBorrowedBooks((prev) => ({ ...prev, [bookId]: true }));
 
     setTimeout(() => {
-      setBorrowedBooks(prev => {
+      setBorrowedBooks((prev) => {
         const updatedBorrowedBooks = { ...prev };
         delete updatedBorrowedBooks[bookId];
         return updatedBorrowedBooks;
       });
 
-      const returnedBookTitle = books.find(book => book.id === bookId)?.volumeInfo.title || '不明な本';
-      setReturnNotifications(prev => [...prev, `${returnedBookTitle} が返却されました。`]);
+      const returnedBookTitle =
+        books.find((book) => book.id === bookId)?.volumeInfo.title ||
+        "不明な本";
+      setReturnNotifications((prev) => [
+        ...prev,
+        `${returnedBookTitle} が返却されました。`,
+      ]);
 
       setTimeout(() => {
-        setReturnNotifications(prev => prev.slice(1));
+        setReturnNotifications((prev) => prev.slice(1));
       }, 10000);
-
     }, returnTime);
 
     setRandomRequestedBook(books);
-    setUsers(prev => prev + 1); // 次の利用者をセットするときにユーザー数を増やす
+    setUsers((prev) => prev + 1); // 次の利用者をセットするときにユーザー数を増やす
   };
 
   const handleCheckBorrowed = (bookId: string) => {
-    if (borrowedBooks[bookId]) {
-      setPoints(prev => prev + 10);
-      displayMessage('この本は貸出中です！');
+    if (!requestedBook) return;
+
+    if (bookId === requestedBook.id) {
+      if (borrowedBooks[bookId]) {
+        setPoints((prev) => prev + 10);
+        displayMessage("正解！この本は貸出中です！"); //ポジティブレスポンス
+      } else {
+        setPoints((prev) => prev - 20);
+        displayMessage("この本は貸出中ではありません。"); //ネガティブレスポンス
+      }
     } else {
-      setPoints(prev => prev - 20);
-      displayMessage('この本は貸出中ではありません。');
+      setPoints((prev) => prev - 20);
+      displayMessage("誤った本が選択されました。"); //ネガティブレスポンス
+      return;
     }
+
     // 次の利用者をセット
     setRandomRequestedBook(books);
-    setUsers(prev => prev + 1); // 次の利用者をセットするときにユーザー数を増やす
+    setUsers((prev) => prev + 1); // 次の利用者をセットするときにユーザー数を増やす
   };
 
   const displayMessage = (msg: string) => {

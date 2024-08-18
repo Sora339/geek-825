@@ -31,7 +31,7 @@ const MyPage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        router.push("/");
+        router.push("/auth");
       }
     });
 
@@ -112,6 +112,13 @@ const MyPage = () => {
             <Link href="/game">
               <Button className="h-max bg-green-400 shadow-md hover:bg-green-500">
                 <p className="text-2xl font-bold">スタート</p>
+              </Button>
+            </Link>
+          </div>
+          <div className="pb-7">
+            <Link href="/mylikes">
+              <Button className="h-max bg-blue-700 shadow-md hover:bg-blue-900">
+                <p className="text-2xl font-bold">My本棚</p>
               </Button>
             </Link>
           </div>

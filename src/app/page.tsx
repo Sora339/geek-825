@@ -9,6 +9,7 @@ import About from "./components/top/about/about";
 import HowToPlay from "./components/top/howToPlay/howToPlay";
 import Footer from "./layout/footer/footer";
 import Header from "./layout/header/header";
+import StartButton from "./components/top/startButton";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -39,7 +40,7 @@ export default function Home() {
           />
           <About />
           <HowToPlay />
-          {/* <StartButton /> */}
+          <StartButton />
         </div>
       </div>
       <Footer />

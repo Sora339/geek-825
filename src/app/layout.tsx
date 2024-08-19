@@ -7,8 +7,8 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "Tech Type", template: "%s|Tech Type" },
-  description: "好きな技術でタイピング！文章が変わる新感覚ゲーム",
+  title: { default: "Maclay Rush", template: "%s|Maclay Rush" },
+  description: "敏腕図書館司書を目指して！新感覚書籍探索ゲーム",
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="bg-[#252525]">
         <body className={inter.className}>
           {children}
         </body>

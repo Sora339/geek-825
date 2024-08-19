@@ -38,12 +38,12 @@ export default function Home() {
         <h2 className="text-5xl md:text-7xl mb-12">Maclay Rush</h2>
         <p className="text-xl md:text-2xl">会員証を手に取ってはじめる</p>
       </div>
-      <div className="absolute right-[20%] bottom-[10%] z-20">
+      <div className="absolute  right-[20%] bottom-[10%] z-20">
         <Link href={"/auth"}>
-          <div className="rotate-12 h-[120px] w-[200px] bg-[#dddddd] text-black text-sm rounded-lg px-6 py-3 cursor-pointer hover:bg-gray-400 inline-block">
-            マクレイ図書館会員証
+          <div className="text-center rotate-12 bg-[url('/image/card.webp')] bg-contain h-[120px] w-[200px] bg-[#dddddd] text-black text-sm rounded-lg px-6 py-3 cursor-pointer hover:bg-gray-400 inline-block">
+            会員証
             <br />
-            <p className="mt-4 text-center">不思議な本の世界へ</p>
+            <p className="mt-4">心躍る本の世界へ</p>
           </div>
         </Link>
       </div>

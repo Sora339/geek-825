@@ -94,48 +94,66 @@ const MyPage = () => {
         <Header />
         <div className="container mx-auto p-4 flex-grow">
           {userData ? (
-            <div className="text-center">
-              <img
-                src={userData.photoURL}
-                alt={userData.name}
-                className="w-24 h-24 rounded-full mx-auto mb-4"
-              />
-              <h1 className="text-2xl font-bold">{userData.name}</h1>
-              {totalScore !== null && (
-                <p className="text-xl mt-4">
-                  これまでの総合スコア: {totalScore}
-                </p>
-              )}
+            <div>
+              <h1 className="text-7xl font-bold text-white">図書館証</h1>  
+              <div>
+                <img
+                  src={userData.photoURL}
+                  alt={userData.name}
+                  className="w-24 h-24 rounded-full mb-4"
+                />
+                <div className="flex gap-5">
+                  <p className="text-4xl text-left text-white">氏名</p>
+                  <h1 className="text-4xl font-bold text-white">{userData.name}</h1>
+                </div>
+
+                <hr/>
+
+                <div className="flex gap-5">
+                  <p className="text-4xl text-left text-white">経験値</p>
+                  {totalScore !== null && (<h1 className="text-4xl text-white">{totalScore}</h1> )}
+                </div>
+
+                <hr/>
+
+                <div className="flex gap-5">
+                  <p className="text-4xl text-left text-white">会員ランク</p>
+                </div>
+
+                <hr/>
+
+              </div>
             </div>
+
           ) : (
             <div>User data not found.</div>
           )}
-          <div className="flex justify-center gap-3 pt-5">
+          <div className="flex justify-center gap-14 pt-5 mt-36">
             <div>
               <Link href="/game">
-                <Button className="h-max bg-green-400 shadow-md hover:bg-green-500">
-                  <p className="text-2xl font-bold">スタート</p>
+                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                  <p className="text-5xl font-bold">スタート</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/mylikes">
-                <Button className="h-max bg-blue-700 shadow-md hover:bg-blue-900">
-                  <p className="text-2xl font-bold">My本棚</p>
+                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                  <p className="text-5xl font-bold">My本棚</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/gallery">
-                <Button className="h-max bg-purple-700 shadow-md hover:bg-purple-900">
-                  <p className="text-2xl font-bold">本棚ギャラリー</p>
+                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                  <p className="text-5xl font-bold">本棚ギャラリー</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/rankingPage">
-                <Button className="h-max bg-orange-700 shadow-md hover:bg-orange-900">
-                  <p className="text-2xl font-bold">ランキング</p>
+                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                  <p className="text-5xl font-bold">ランキング</p>
                 </Button>
               </Link>
             </div>

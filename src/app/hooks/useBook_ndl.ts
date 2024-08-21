@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { db, auth } from "../../lib/firebase/client";
 import { collection, addDoc } from "firebase/firestore";
-import { Book } from "@/../src/types/game"; // 共通の型をインポート
+import { Book } from "@/../src/types/game"; // 提供された Book 型をインポート
 import { onAuthStateChanged, User } from "firebase/auth";
 
 const useBooks = () => {
@@ -18,6 +18,12 @@ const useBooks = () => {
   const [message, setMessage] = useState<string | null>(null); // メッセージ表示用の状態
   const [user, setUser] = useState<User | null>(null); // ログインしているユーザーの情報を保持
 
+  const baseUrl = 'https://ndlsearch.ndl.go.jp/api/opensearch';
+  const query = 'Python'; // Japanese for 'computer science'
+  const count = 8; // Number of books to retrieve
+  const totalResults = 290; // Total number of results available (can be fetched from API)
+  const seenTitles = new Set<string>(); // Track titles that have already been displayed
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -31,32 +37,75 @@ const useBooks = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      let allBooks: Book[] = [];
-      const titleSet = new Set<string>();
+      let books: Book[] = [];
+      while (books.length < count) {
+        try {
+          console.log('Fetching random books...');
+          // Generate a random start index within the range of total results
+          const randomStartIndex = Math.floor(Math.random() * (totalResults - count + 1)) + 1;
+          const url = `${baseUrl}?title=${encodeURIComponent(query)}&cnt=${count}&idx=${randomStartIndex}`;
+          const response = await fetch(url);
 
-      while (allBooks.length < 8) {
-        const randomStartIndex = Math.floor(Math.random() * 400);
-        console.log(randomStartIndex);
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=8&startIndex=${randomStartIndex}&orderBy=newest&langRestrict=ja`
-        );
-        const data = await response.json();
-
-        const uniqueBooks = (data.items || []).filter((book: Book) => {
-          const title = book.volumeInfo.title;
-          if (!titleSet.has(title)) {
-            titleSet.add(title);
-            return true;
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
           }
-          return false;
-        });
 
-        allBooks = [...allBooks, ...uniqueBooks];
-        allBooks = allBooks.slice(0, 8); // 必要な8冊だけ残す
+          const data = await response.text();
+          console.log('Data received:', data);
+
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(data, "text/xml");
+
+          const items = Array.from(xmlDoc.getElementsByTagName("item"));
+          console.log('Parsed items:', items);
+
+          const uniqueBooks = items.map((item, index) => {
+            const titleElement = item.getElementsByTagName("dc:title")[0];
+            const descriptionElement = item.getElementsByTagName("dc:description")[0];
+            const isbnElement = item.getElementsByTagName("dc:identifier")[0]; // Assuming this is the ISBN
+            const jpECodeElement = item.getElementsByTagName("dc:identifier")[1]; // Assuming second identifier is JP-e code
+
+            const title = titleElement ? titleElement.textContent || "No Title" : "No Title";
+            if (seenTitles.has(title)) {
+              return null; // Skip duplicate titles
+            }
+            seenTitles.add(title);
+
+            let imageUrl = "";
+            if (isbnElement) {
+              const isbn = isbnElement.textContent?.replace(/-/g, '');
+              imageUrl = isbn ? `https://ndlsearch.ndl.go.jp/thumbnail/${isbn}.jpg` : "";
+            } else if (jpECodeElement) {
+              const jpECode = jpECodeElement.textContent?.replace(/-/g, '');
+              imageUrl = jpECode ? `https://ndlsearch.ndl.go.jp/thumbnail/${jpECode}.jpg` : "";
+            }
+
+            // Console log to verify the data
+            console.log(`Book ${index + 1}:`);
+            console.log(`ID: ${isbnElement?.textContent || jpECodeElement?.textContent || `generated-id-${index}`}`);
+            console.log(`Title: ${title}`);
+            console.log(`Description: ${descriptionElement ? descriptionElement.textContent : "No Description"}`);
+            console.log(`Thumbnail: ${imageUrl}`);
+
+            return {
+              id: isbnElement?.textContent || jpECodeElement?.textContent || `generated-id-${index}`,
+              volumeInfo: {
+                title,
+                description: descriptionElement ? descriptionElement.textContent || undefined : undefined,
+                imageLinks: imageUrl ? { smallThumbnail: imageUrl } : undefined,
+              },
+              saleInfo: undefined, // NDLのデータには販売情報は含まれないため
+            } as Book;
+          }).filter(book => book !== null && book.volumeInfo.imageLinks !== undefined); // Filter out null and books without images
+
+          books = books.concat(uniqueBooks as Book[]).slice(0, count);
+        } catch (error) {
+          console.error('Fetching books failed:', error);
+          break;
+        }
       }
-
-      setBooks(allBooks);
-      setRandomRequestedBook(allBooks);
+      setBooks(books as Book[]);
+      setRandomRequestedBook(books as Book[]);
       setUsers(1); // ゲームが開始されたときに最初のユーザーをセット
     };
 
@@ -76,7 +125,6 @@ const useBooks = () => {
 
     if (bookId === requestedBook.id) {
       if (borrowedBooks[bookId]) {
-        // 本がすでに貸出中の場合、20ポイント減点し、メッセージを表示
         setPoints((prev) => prev - 20);
         displayMessage("この本はすでに貸出中です！"); //ネガティブレスポンス
       } else {
@@ -134,7 +182,6 @@ const useBooks = () => {
       return;
     }
 
-    // 次の利用者をセット
     setRandomRequestedBook(books);
     setUsers((prev) => prev + 1); // 次の利用者をセットするときにユーザー数を増やす
   };

@@ -99,9 +99,12 @@ export default function Result({ score, books, userId }: ResultProps) {
                       <Image
                         src={book.volumeInfo.imageLinks.smallThumbnail}
                         alt={book.volumeInfo.title}
-                        layout="fill"
-                        objectFit="contain"
-                        objectPosition="center"
+                        fill
+                        sizes="200px"
+                        style={{
+                          objectFit: 'contain',
+                          objectPosition: 'center',
+                        }}
                         className="rounded"
                       />
                     </div>

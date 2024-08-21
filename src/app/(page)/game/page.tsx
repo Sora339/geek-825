@@ -9,6 +9,7 @@ import useBooks from "@/app/hooks/useBook";
 import Result from "../../components/game/result";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Home() {
   const {
@@ -85,7 +86,13 @@ export default function Home() {
           </Link>
           <div className="flex">
             <div className="sticky top-0 bg-white mr-4 p-4 w-[270px]">
-              <h1 className="text-3xl font-bold mb-4">本棚ゲーム</h1>
+              <Image
+                src={"/image/cus_"+users%8+".webp"}
+                alt='customer'
+                priority
+                width={300}
+                height={300}
+              ></Image>
               <p className="mb-4">現在のポイント: {points}</p>
               <p className="mb-4">残り時間: {formatTime(timeLeft)}</p>{" "}
               {/* タイマーの表示 */}

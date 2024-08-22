@@ -116,12 +116,14 @@ const MyLikes = () => {
   }
 
   return (
-    <div className={`bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}>
+    <div
+      className={`bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+    >
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-white">My本棚</h1>
+            <h1 className="text-5xl font-bold text-white">My本棚</h1>
             <button onClick={togglePublic} className="text-xl">
               {isPublic ? (
                 <div className="flex items-center gap-2">
@@ -138,17 +140,20 @@ const MyLikes = () => {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {likedBooks.map((book) => (
-              <div key={book.id} className="border p-2 rounded h-[400px] overflow-y-scroll bg-white">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold">
-                    {book.volumeInfo.title}
-                  </h2>
-                  <button onClick={() => handleLike(book.id)}>
-                    <div className="flex gap-1">
+              <div
+                key={book.id}
+                className="border p-2 rounded h-[400px] overflow-y-scroll bg-white"
+              >
+                <div className="justify-between items-center">
+                  <button className="w-full" onClick={() => handleLike(book.id)}>
+                    <div className="flex gap-1 justify-end">
                       <p>お気に入り</p>
                       <IoHeartSharp className="text-red-500 text-2xl" />
                     </div>
                   </button>
+                  <h2 className="text-xl font-semibold">
+                    {book.volumeInfo.title}
+                  </h2>
                 </div>
                 {book.volumeInfo.imageLinks?.smallThumbnail && (
                   <div className="flex justify-center">

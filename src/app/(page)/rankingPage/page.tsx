@@ -99,10 +99,13 @@ const Ranking = () => {
   }
 
   return (
-    <div className={`bg-[url('../../public/image/bg-ranking.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}>
+    <div
+      className={`bg-[url('../../public/image/bg-ranking.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+    >
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
+          <h1 className="text-5xl text-white font-bold mb-4">ランキング</h1>
           {highScore !== null && (
             <div className="bg-blue-100 p-4 mb-4 rounded text-center">
               <h2 className="text-xl font-bold">
@@ -110,7 +113,6 @@ const Ranking = () => {
               </h2>
             </div>
           )}
-          <h1 className="text-3xl text-white font-bold mb-4">ランキング</h1>
           <table className="min-w-full bg-white">
             <thead>
               <tr>

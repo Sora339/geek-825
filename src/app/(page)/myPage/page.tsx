@@ -16,6 +16,14 @@ import Header from "@/app/layout/header/header";
 import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Kaisei_Decol } from "next/font/google";
+import Image from "next/image";
+
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 type UserData = {
   name: string;
@@ -89,42 +97,46 @@ const MyPage = () => {
   }
 
   return (
-    <div className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay h-[100vh]">
+    <div
+      className={`bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+    >
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
           {userData ? (
             <div>
-              <h1 className="text-7xl font-bold text-white">図書館証</h1>  
-              <div>
-                <img
-                  src={userData.photoURL}
-                  alt={userData.name}
-                  className="w-24 h-24 rounded-full mb-4"
-                />
-                <div className="flex gap-5">
-                  <p className="text-4xl text-left text-white">氏名</p>
-                  <h1 className="text-4xl font-bold text-white">{userData.name}</h1>
+              <h1 className="text-5xl font-bold text-white">図書館証</h1>
+              <div className="flex mt-36 gap-24 justify-center items-center">
+                <div>
+                  <Avatar className="mx-auto size-48">
+                    <AvatarImage src={userData.photoURL} className="size-48" />
+                    <AvatarFallback>{userData.name}</AvatarFallback>
+                  </Avatar>
                 </div>
-
-                <hr/>
-
-                <div className="flex gap-5">
-                  <p className="text-4xl text-left text-white">経験値</p>
-                  {totalScore !== null && (<h1 className="text-4xl text-white">{totalScore}</h1> )}
+                <div className="h-40 w-[500px]">
+                  <div className="flex gap-5">
+                    <p className="text-4xl  text-white">氏名: </p>
+                    <h1 className="text-4xl ml-auto font-bold text-white">
+                      {userData.name}
+                    </h1>
+                  </div>
+                  <hr />
+                  <div className="flex gap-5">
+                    <p className="text-4xl text-white">経験値: </p>
+                    {totalScore !== null && (
+                      <h1 className="text-4xl ml-auto text-white">
+                        {totalScore}
+                      </h1>
+                    )}
+                  </div>
+                  <hr />
+                  <div className="flex gap-5">
+                    <p className="text-4xl text-white">会員ランク: </p>
+                  </div>
+                  <hr />
                 </div>
-
-                <hr/>
-
-                <div className="flex gap-5">
-                  <p className="text-4xl text-left text-white">会員ランク</p>
-                </div>
-
-                <hr/>
-
               </div>
             </div>
-
           ) : (
             <div>User data not found.</div>
           )}
@@ -146,7 +158,7 @@ const MyPage = () => {
             <div className="pb-7">
               <Link href="/gallery">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl font-bold">本棚ギャラリー</p>
+                  <p className="text-5xl font-bold">ギャラリー</p>
                 </Button>
               </Link>
             </div>

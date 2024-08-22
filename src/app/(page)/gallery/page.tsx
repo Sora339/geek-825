@@ -60,7 +60,7 @@ const Gallery = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
-          <h1 className="text-3xl font-bold mb-4 text-white">本棚ギャラリー</h1>
+          <h1 className="text-5xl font-bold mb-4 text-white">本棚ギャラリー</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {userLikes.map((user, index) => (
               <GalleryCard

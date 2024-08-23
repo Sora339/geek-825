@@ -106,36 +106,38 @@ const Ranking = () => {
         <Header />
         <div className="container mx-auto p-4 flex-grow">
           <h1 className="text-5xl text-white font-bold mb-4">ランキング</h1>
-          {highScore !== null && (
-            <div className="bg-blue-100 p-4 mb-4 rounded text-center">
-              <h2 className="text-xl font-bold">
-                あなたのハイスコア: {highScore}
-              </h2>
-            </div>
-          )}
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="py-2">順位</th>
-                <th className="py-2">ユーザー名</th>
-                <th className="py-2">スコア</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankings.map((ranking, index) => (
-                <tr
-                  key={index}
-                  className={
-                    ranking.userId === currentUserId ? "bg-yellow-300" : ""
-                  }
-                >
-                  <td className="border px-4 py-2">{index + 1}</td>
-                  <td className="border px-4 py-2">{ranking.userName}</td>
-                  <td className="border px-4 py-2">{ranking.score}</td>
+          <div className="h-[800px] w-[600px] p-36 bg-[url('../../public/image/bg_ranking2.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay">
+            {highScore !== null && (
+              <div className="bg-blue-100 p-4 mb-4 rounded text-center">
+                <h2 className="text-xl font-bold">
+                  あなたのハイスコア: {highScore}
+                </h2>
+              </div>
+            )}
+            <table className="min-w-full bg-white">
+              <thead>
+                <tr>
+                  <th className="py-2">順位</th>
+                  <th className="py-2">ユーザー名</th>
+                  <th className="py-2">スコア</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rankings.map((ranking, index) => (
+                  <tr
+                    key={index}
+                    className={
+                      ranking.userId === currentUserId ? "bg-yellow-300" : ""
+                    }
+                  >
+                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2">{ranking.userName}</td>
+                    <td className="border px-4 py-2">{ranking.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <Footer />
       </div>

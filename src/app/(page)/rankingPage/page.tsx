@@ -68,7 +68,7 @@ const Ranking = () => {
         const q = query(
           collection(db, "gameResults"),
           orderBy("score", "desc"),
-          limit(20)
+          limit(10)
         );
         const querySnapshot = await getDocs(q);
         const fetchedRankings: GameResult[] = [];
@@ -105,21 +105,21 @@ const Ranking = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
-          <h1 className="text-5xl text-white font-bold mb-4">ランキング</h1>
-          <div className="h-[800px] w-[600px] p-36 bg-[url('../../public/image/bg_ranking2.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay">
+          <h1 className="text-5xl text-white mb-4">ランキング</h1>
+          <div className="mx-auto h-[700px] w-[570px] pt-24 bg-[url('../../public/image/bg_ranking2.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay">
             {highScore !== null && (
-              <div className="bg-blue-100 p-4 mb-4 rounded text-center">
-                <h2 className="text-xl font-bold">
+              <div className=" p-4 rounded text-center">
+                <h2 className="text-white mt-2 text-xl">
                   あなたのハイスコア: {highScore}
                 </h2>
               </div>
             )}
-            <table className="min-w-full bg-white">
+            <table className="mx-auto w-[340px]">
               <thead>
-                <tr>
-                  <th className="py-2">順位</th>
-                  <th className="py-2">ユーザー名</th>
-                  <th className="py-2">スコア</th>
+                <tr className="text-white">
+                  <th>順位</th>
+                  <th>ユーザー名</th>
+                  <th>スコア</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,12 +127,12 @@ const Ranking = () => {
                   <tr
                     key={index}
                     className={
-                      ranking.userId === currentUserId ? "bg-yellow-300" : ""
+                      ranking.userId === currentUserId ? "text-yellow-300" : "text-white"
                     }
                   >
-                    <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2">{ranking.userName}</td>
-                    <td className="border px-4 py-2">{ranking.score}</td>
+                    <td className="text-center px-4 py-2">{index + 1}</td>
+                    <td className="text-center px-4 py-2">{ranking.userName}</td>
+                    <td className="text-center px-4 py-2">{ranking.score}</td>
                   </tr>
                 ))}
               </tbody>

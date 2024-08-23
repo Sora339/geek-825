@@ -92,6 +92,15 @@ const MyPage = () => {
     return () => unsubscribe();
   }, []);
 
+  const getRank = (score: number | null): string => {
+    if (score === null) return "新米司書";
+    if (score >= 3000) return "図書館長";
+    if (score >= 2000) return "上級司書";
+    if (score >= 1000) return "熟練司書";
+    if (score >= 500) return "若手司書";
+    return "新米司書";
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -105,7 +114,7 @@ const MyPage = () => {
         <div className="container mx-auto p-4 flex-grow">
           {userData ? (
             <div>
-              <h1 className="text-5xl font-bold text-white">図書館証</h1>
+              <h1 className="text-5xl text-white">図書館証</h1>
               <div className="flex mt-36 gap-24 justify-center items-center">
                 <div>
                   <Avatar className="mx-auto size-48">
@@ -114,26 +123,31 @@ const MyPage = () => {
                   </Avatar>
                 </div>
                 <div className="h-40 w-[500px]">
-                  <div className="flex gap-5">
-                    <p className="text-4xl  text-white">氏名: </p>
-                    <h1 className="text-4xl ml-auto font-bold text-white">
-                      {userData.name}
-                    </h1>
-                  </div>
-                  <hr />
-                  <div className="flex gap-5">
-                    <p className="text-4xl text-white">経験値: </p>
-                    {totalScore !== null && (
+                  <div className="h-40 flex flex-col justify-between">
+                    <div className="flex gap-5">
+                      <p className="text-4xl  text-white">氏名: </p>
                       <h1 className="text-4xl ml-auto text-white">
-                        {totalScore}
+                        {userData.name}
                       </h1>
-                    )}
+                    </div>
+                    <hr />
+                    <div className="flex gap-5">
+                      <p className="text-4xl text-white">経験値: </p>
+                      {totalScore !== null && (
+                        <h1 className="text-4xl ml-auto text-white">
+                          {totalScore}
+                        </h1>
+                      )}
+                    </div>
+                    <hr />
+                    <div className="flex gap-5">
+                      <p className="text-4xl text-white">会員ランク: </p>
+                      <h1 className="text-4xl ml-auto text-white">
+                        {getRank(totalScore)}
+                      </h1>
+                    </div>
+                    <hr />
                   </div>
-                  <hr />
-                  <div className="flex gap-5">
-                    <p className="text-4xl text-white">会員ランク: </p>
-                  </div>
-                  <hr />
                 </div>
               </div>
             </div>
@@ -144,28 +158,28 @@ const MyPage = () => {
             <div>
               <Link href="/game">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl font-bold">スタート</p>
+                  <p className="text-5xl ">スタート</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/mylikes">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl font-bold">My本棚</p>
+                  <p className="text-5xl ">My本棚</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/gallery">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl font-bold">ギャラリー</p>
+                  <p className="text-5xl ">ギャラリー</p>
                 </Button>
               </Link>
             </div>
             <div className="pb-7">
               <Link href="/rankingPage">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl font-bold">ランキング</p>
+                  <p className="text-5xl ">ランキング</p>
                 </Button>
               </Link>
             </div>

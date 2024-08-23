@@ -10,6 +10,12 @@ import Result from "../../components/game/result";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Kaisei_Decol } from "next/font/google";
+
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export default function Home() {
   const {
@@ -21,6 +27,8 @@ export default function Home() {
     handleLendBook,
     handleCheckBorrowed,
     saveResultToFirestore,
+    resetGame, // リセット関数を取得
+    clearBorrowedBooks, // 貸出中の本と通知をリセットする関数を取得
     message, // メッセージを取得
   } = useBooks();
 
@@ -59,11 +67,18 @@ export default function Home() {
 
   const handleGameEnd = () => {
     saveResultToFirestore(points);
+    clearBorrowedBooks(); // ゲーム終了時に貸出中の本と返却通知をリセット
     setShowResult(true); // ゲーム終了時にモーダルを表示
   };
 
   const handleCloseResult = () => {
     setShowResult(false); // モーダルを閉じる
+  };
+
+  const handleResetGame = () => {
+    setTimeLeft(180); // タイマーをリセット
+    setShowResult(false); // 結果モーダルを非表示
+    resetGame(); // ゲーム状態をリセット（本の再フェッチと通知クリア含む）
   };
 
   const formatTime = (seconds: number) => {
@@ -73,8 +88,10 @@ export default function Home() {
   };
 
   return (
-    <div className=" bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(255,255,255,0.25)] bg-blend-lighten h-[100vh]">
-      <div className="container mx-auto p-4">
+    <div
+      className={`bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-[100vh] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+    >
+      <div className="container w-fit mx-auto p-4">
         <div className="mt-8">
           <Link href={"/myPage"}>
             <Button
@@ -84,39 +101,51 @@ export default function Home() {
               ゲーム終了
             </Button>
           </Link>
-          <div className="flex">
+          <div className="flex h-[700px] justify-center">
             <div className="sticky top-0 bg-white mr-4 p-4 w-[270px]">
               <Image
-                src={"/image/cus_"+users%8+".webp"}
-                alt='customer'
+                src={"/image/cus_" + (users % 8) + ".webp"}
+                alt="customer"
                 priority
                 width={300}
                 height={300}
               ></Image>
-              <p className="mb-4">現在のポイント: {points}</p>
-              <p className="mb-4">残り時間: {formatTime(timeLeft)}</p>{" "}
-              {/* タイマーの表示 */}
+              <p>現在のポイント: {points}</p>
+              <p className="mb-2">残り時間: {formatTime(timeLeft)}</p>{" "}
               {requestedBook && (
-                <div className="mb-4 h-[140px]">
-                  <h2 className="text-xl">
+                <div className="mb-4">
+                  <h2 className="text-xl h-[100px] overflow-y-scroll">
                     利用者No.{users}の希望:
                     <br /> {requestedBook.volumeInfo.title}
                   </h2>
-                  <div className="mt-2">
-                    <p>{message}</p> {/* メッセージをここに表示 */}
+                  <div className="mt-2 h-[10px]">
+                    {/* メッセージの色を変更 */}
+                    <p
+                      style={{
+                        color:
+                          message === "正しく貸し出せました。" ||
+                          message === "正解！この本は貸出中です！"
+                            ? "green"
+                            : "red",
+                      }}
+                    >
+                      {message}
+                    </p>
                   </div>
                 </div>
               )}
-              <div className="mt-12">
+              <div className="mt-6">
                 <p className="mb-2 text-xl">返却通知</p>
-                {returnNotifications.map((notification, index) => (
-                  <p key={index} className="bg-gray-200 p-2 rounded mb-2">
-                    {notification}
-                  </p>
-                ))}
+                <div className="h-48 overflow-y-scroll">
+                  {returnNotifications.map((notification, index) => (
+                    <p key={index} className="bg-gray-200 p-2 rounded mb-2 ">
+                      {notification}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
-            <div>
+            <div className="h-[700px]">
               <Bookshelf
                 books={books}
                 onLendBook={handleLendBook}
@@ -127,7 +156,12 @@ export default function Home() {
         </div>
       </div>
       {showResult && userId && (
-        <Result score={points} books={books} userId={userId} />
+        <Result
+          score={points}
+          books={books}
+          userId={userId}
+          onReset={handleResetGame}
+        />
       )}
     </div>
   );

@@ -4,16 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { useState, useEffect } from "react";
-import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/client"; // 先ほどのコードにあったFirestoreの初期化
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase/client"; // Firestoreの初期化
 
 interface ResultProps {
   score: number;
   books: Book[];
   userId: string;
+  onReset: () => void; // ゲームリセットのためのプロパティ
 }
 
-export default function Result({ score, books, userId }: ResultProps) {
+export default function Result({ score, books, userId, onReset }: ResultProps) {
   const [likedBooks, setLikedBooks] = useState<string[]>([]);
 
   useEffect(() => {
@@ -33,7 +40,7 @@ export default function Result({ score, books, userId }: ResultProps) {
 
   const handleLike = async (bookId: string) => {
     const userDocRef = doc(db, "users", userId);
-  
+
     try {
       if (likedBooks.includes(bookId)) {
         await updateDoc(userDocRef, {
@@ -50,7 +57,6 @@ export default function Result({ score, books, userId }: ResultProps) {
       console.error("Error updating likes: ", error);
     }
   };
-  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -58,11 +64,9 @@ export default function Result({ score, books, userId }: ResultProps) {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold mb-4">ゲーム結果</h1>
           <div className="flex gap-4">
-            <Link href={"/game"}>
-              <Button className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded">
-                やり直す
-              </Button>
-            </Link>
+            <Button onClick={onReset} className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded">
+              やり直す
+            </Button>
             <Link href={"/myPage"}>
               <Button className="mt-4 bg-red-500 text-white mb-6 py-2 px-4 rounded">
                 マイページ
@@ -80,8 +84,10 @@ export default function Result({ score, books, userId }: ResultProps) {
           {books.map((book) => (
             <div key={book.id} className="mb-4 p-4 border rounded">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">{book.volumeInfo.title}</h2>
-                <button onClick={() => handleLike(book.id)}>  
+                <h2 className="text-xl font-semibold">
+                  {book.volumeInfo.title}
+                </h2>
+                <button onClick={() => handleLike(book.id)}>
                   {likedBooks.includes(book.id) ? (
                     <div className="flex gap-1">
                       <p>お気に入り</p>
@@ -102,8 +108,8 @@ export default function Result({ score, books, userId }: ResultProps) {
                         fill
                         sizes="200px"
                         style={{
-                          objectFit: 'contain',
-                          objectPosition: 'center',
+                          objectFit: "contain",
+                          objectPosition: "center",
                         }}
                         className="rounded"
                       />
@@ -114,17 +120,19 @@ export default function Result({ score, books, userId }: ResultProps) {
                   {book.volumeInfo.description || "説明がありません。"}
                 </p>
               </div>
-              {book.saleInfo?.saleability === "FOR_SALE" &&
-                book.saleInfo?.buyLink && (
-                  <a
-                    href={book.saleInfo.buyLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500"
-                  >
-                    購入リンク
-                  </a>
-                )}
+              <div className="w-full text-right">
+                {book.saleInfo?.saleability === "FOR_SALE" &&
+                  book.saleInfo?.buyLink && (
+                    <a
+                      href={book.saleInfo.buyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500"
+                    >
+                      購入リンク
+                    </a>
+                  )}
+              </div>
             </div>
           ))}
         </div>

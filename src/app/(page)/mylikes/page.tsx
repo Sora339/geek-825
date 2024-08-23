@@ -123,7 +123,7 @@ const MyLikes = () => {
         <Header />
         <div className="container mx-auto p-4 flex-grow">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-5xl font-bold text-white">My本棚</h1>
+            <h1 className="text-5xl text-white">My本棚</h1>
             <button onClick={togglePublic} className="text-xl">
               {isPublic ? (
                 <div className="flex items-center gap-2">

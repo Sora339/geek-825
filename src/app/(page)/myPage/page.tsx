@@ -1,17 +1,10 @@
+// /app/mypage/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { auth, db } from "@/lib/firebase/client";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase/client";
 import Header from "@/app/layout/header/header";
 import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
@@ -40,57 +33,30 @@ const MyPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
         router.push("/auth");
+        setLoading(false);
+      } else {
+        fetchUserData(user.uid);
       }
     });
 
     return () => unsubscribe();
   }, [router]);
 
-  useEffect(() => {
-    const fetchUserData = async (uid: string) => {
-      try {
-        const userDoc = await getDoc(doc(db, "users", uid));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data() as UserData);
-        } else {
-          console.log("No such user data!");
-        }
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
+  const fetchUserData = async (uid: string) => {
+    try {
+      const response = await fetch(`/api/user?uid=${uid}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
       }
-    };
-
-    const fetchUserScores = async (uid: string) => {
-      try {
-        const q = query(
-          collection(db, "gameResults"),
-          where("userId", "==", uid)
-        );
-        const querySnapshot = await getDocs(q);
-        let scoreSum = 0;
-
-        querySnapshot.forEach((doc) => {
-          scoreSum += doc.data().score;
-        });
-
-        setTotalScore(scoreSum);
-      } catch (error) {
-        console.error("Error fetching user scores: ", error);
-      }
-    };
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchUserData(user.uid);
-        fetchUserScores(user.uid);
-      } else {
-        console.log("User is not logged in.");
-      }
+      const { userData, totalScore } = await response.json();
+      setUserData(userData);
+      setTotalScore(totalScore);
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+    } finally {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+    }
+  };
 
   const getRank = (score: number | null): string => {
     if (score === null) return "新米司書";

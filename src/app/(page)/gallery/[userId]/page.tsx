@@ -132,7 +132,7 @@ const UserBookshelf = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         <div className="container mx-auto p-4 flex-grow">
-          <h1 className="text-5xl text-white font-bold mb-4">
+          <h1 className="text-5xl text-white mb-4">
             {userName}さんの本棚
           </h1>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

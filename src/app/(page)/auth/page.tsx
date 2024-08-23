@@ -13,19 +13,27 @@ const Kaisei = Kaisei_Decol({
   subsets: ["latin"],
 });
 
-const Login = async () => {
+const Login = () => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        router.push("/myPage"); // Redirect to myPage.tsx if the user is logged in
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
       }
     });
+
     return () => unsubscribe();
-  }, [router]);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      // userがセットされたタイミングでリダイレクト
+      router.push("/myPage");
+    }
+  }, [user, router]);
+
   return (
     <div className={`bg-[url('../../public/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay h-[100vh] ${Kaisei.className}`}>
       <div

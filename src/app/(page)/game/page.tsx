@@ -89,10 +89,10 @@ export default function Home() {
 
   return (
     <div
-      className={`bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-[100vh] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+      className={`bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay bg-fixed ${Kaisei.className}`}
     >
-      <div className="container w-fit mx-auto p-4">
-        <div className="mt-8">
+      <div className="container w-fit min-h-screen mx-auto p-4">
+        <div className="mb-8">
           <Link href={"/myPage"}>
             <Button
               onClick={handleGameEnd}

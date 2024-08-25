@@ -38,7 +38,7 @@ export default function Home() {
     isBooksReady, // 本が揃っているかの状態
   } = useBooks();
 
-  const [timeLeft, setTimeLeft] = useState<number>(10); // 3分間のタイマー（秒単位）
+  const [timeLeft, setTimeLeft] = useState<number>(180); // 3分間のタイマー（秒単位）
   const [showResult, setShowResult] = useState<boolean>(false); // モーダル表示状態を管理
   const [userId, setUserId] = useState<string | null>(null); // userIdの状態
   const router = useRouter();

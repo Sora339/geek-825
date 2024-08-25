@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Kaisei_Decol } from "next/font/google";
+import SubSet from "@/app/components/game/subSet"; // モーダルコンポーネントのインポート
 
 const Kaisei = Kaisei_Decol({
   weight: "400",
@@ -30,6 +31,11 @@ export default function Home() {
     resetGame, // リセット関数を取得
     clearBorrowedBooks, // 貸出中の本と通知をリセットする関数を取得
     message, // メッセージを取得
+    isModalOpen, // モーダルの表示状態
+    setSubject, // subjectを設定する関数
+    handleStartGame, // ゲーム開始の関数
+    errorMessage, // エラーメッセージ
+    isBooksReady, // 本が揃っているかの状態
   } = useBooks();
 
   const [timeLeft, setTimeLeft] = useState<number>(10); // 3分間のタイマー（秒単位）
@@ -50,20 +56,18 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
+    if (isBooksReady && timeLeft > 0) {
+      const timer: ReturnType<typeof setInterval> = setInterval(() => {
+        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+
     if (timeLeft === 0) {
       handleGameEnd();
     }
-
-    const timer: ReturnType<typeof setInterval> | undefined =
-      timeLeft > 0
-        ? setInterval(() => setTimeLeft(timeLeft - 1), 1000)
-        : undefined;
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [timeLeft]);
+  }, [timeLeft, isBooksReady]); // 依存配列に isBooksReady を追加
 
   const handleGameEnd = () => {
     saveResultToFirestore(points);
@@ -96,7 +100,7 @@ export default function Home() {
           <Link href={"/myPage"}>
             <Button
               onClick={handleGameEnd}
-              className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded"
+              className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded z-20"
             >
               ゲーム終了
             </Button>
@@ -155,6 +159,12 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <SubSet
+        isModalOpen={isModalOpen}
+        setSubject={setSubject}
+        handleStartGame={handleStartGame}
+        errorMessage={errorMessage}
+      />
       {showResult && userId && (
         <Result
           score={points}

@@ -17,6 +17,10 @@ const useBooks = () => {
   const [returnNotifications, setReturnNotifications] = useState<string[]>([]);
   const [message, setMessage] = useState<string | null>(null); // メッセージ表示用の状態
   const [user, setUser] = useState<User | null>(null); // ログインしているユーザーの情報を保持
+  const [subject, setSubject] = useState<string>(""); // subjectを保持する状態
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true); // モーダルの表示制御
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // エラーメッセージ
+  const [isBooksReady, setIsBooksReady] = useState<boolean>(false); // 本がフェッチされたことを示す状態
 
   const returnTimersRef = useRef<NodeJS.Timeout[]>([]); // 返却タイマーを管理するRef
 
@@ -31,42 +35,60 @@ const useBooks = () => {
     return () => unsubscribe();
   }, []);
 
-  const fetchBooks = async () => {
+  const fetchBooks = async (subject: string) => {
     let allBooks: Book[] = [];
     const titleSet = new Set<string>();
+    let attempts = 0;
 
-    while (allBooks.length < 8) {
+    while (allBooks.length < 8 && attempts < 3) {
       const randomStartIndex = Math.floor(Math.random() * 400);
       console.log(randomStartIndex);
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&maxResults=8&startIndex=${randomStartIndex}&orderBy=newest&langRestrict=ja`
-      );
-      const data = await response.json();
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes?q=subject:${subject}&maxResults=8&startIndex=${randomStartIndex}&orderBy=newest&langRestrict=ja`
+        );
+        const data = await response.json();
 
-      const uniqueBooks = (data.items || []).filter((book: Book) => {
-        const title = book.volumeInfo.title;
-        if (!titleSet.has(title)) {
-          titleSet.add(title);
-          return true;
-        }
-        return false;
-      });
+        const uniqueBooks = (data.items || []).filter((book: Book) => {
+          const title = book.volumeInfo.title;
+          if (!titleSet.has(title)) {
+            titleSet.add(title);
+            return true;
+          }
+          return false;
+        });
 
-      allBooks = [...allBooks, ...uniqueBooks];
-      allBooks = allBooks.slice(0, 8); // 必要な8冊だけ残す
+        allBooks = [...allBooks, ...uniqueBooks];
+        allBooks = allBooks.slice(0, 8); // 必要な8冊だけ残す
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+      attempts++;
     }
 
-    setBooks(allBooks);
-    setRandomRequestedBook(allBooks);
-    setUsers(1); // ゲームが開始されたときに最初のユーザーをセット
+    if (allBooks.length < 8) {
+      setErrorMessage("十分な本を取得できませんでした。もう一度試してください。");
+      setIsModalOpen(true); // モーダルウィンドウを再表示
+      setIsBooksReady(false); // 本が揃わなかった場合はタイマーを動かさない
+    } else {
+      setBooks(allBooks);
+      setRandomRequestedBook(allBooks);
+      setUsers(1); // ゲームが開始されたときに最初のユーザーをセット
+      setErrorMessage(null); // エラーメッセージをリセット
+      setIsBooksReady(true); // 8冊揃ったら状態を更新
+    }
   };
 
-  useEffect(() => {
-    fetchBooks().catch((error) => {
+  const handleStartGame = () => {
+    setIsModalOpen(false);
+    setIsBooksReady(false); // 新しいゲームの開始時にタイマーをリセット
+    fetchBooks(subject).catch((error) => {
       console.error("Error fetching books:", error);
       setBooks([]);
+      setErrorMessage("エラーが発生しました。もう一度試してください。");
+      setIsModalOpen(true); // エラー時にモーダルを再表示
     });
-  }, []);
+  };
 
   const setRandomRequestedBook = (books: Book[]) => {
     const randomBook = books[Math.floor(Math.random() * books.length)];
@@ -127,8 +149,6 @@ const useBooks = () => {
   };
 
   const handleCheckBorrowed = (bookId: string) => {
-    // この関数の実装が必要です
-    // 例えば、貸出中の本をチェックしてポイントを増減するロジックをここに追加します
     if (!requestedBook) return;
 
     if (bookId === requestedBook.id) {
@@ -184,7 +204,7 @@ const useBooks = () => {
     setUsers(0); // ユーザー数をリセット
     setBorrowedBooks({}); // 貸出中の本をリセット
     setReturnNotifications([]); // 返却通知をリセット
-    fetchBooks(); // 本のフェッチをやり直す
+    setIsModalOpen(true); // モーダルウィンドウを表示
   };
 
   const clearBorrowedBooks = () => {
@@ -206,6 +226,11 @@ const useBooks = () => {
     saveResultToFirestore,
     resetGame, // リセット関数を返す
     clearBorrowedBooks, // 貸出中の本をリセットする関数を返す
+    isModalOpen, // モーダルの表示制御用
+    setSubject, // subjectを設定するための関数
+    handleStartGame, // ゲーム開始の関数
+    errorMessage, // エラーメッセージを返す
+    isBooksReady, // 本がフェッチされたかどうかを示す状態を返す
   };
 };
 

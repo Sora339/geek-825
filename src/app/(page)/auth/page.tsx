@@ -6,12 +6,6 @@ import { auth } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
 import Footer from "@/app/layout/footer/footer";
 import AuthHeader from "./header";
-import { Kaisei_Decol } from "next/font/google";
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 const Login = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -35,7 +29,7 @@ const Login = () => {
   }, [user, router]);
 
   return (
-    <div className={`bg-[url('../../public/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay h-[100vh] ${Kaisei.className}`}>
+    <div className="bg-[url('../../public/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay h-[100vh]">
       <div
         className="flex flex-col min-h-screen"
         style={{ scrollbarGutter: "stable" }}

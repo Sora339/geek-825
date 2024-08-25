@@ -10,13 +10,7 @@ import Result from "../../components/game/result";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Kaisei_Decol } from "next/font/google";
 import SubSet from "@/app/components/game/subSet"; // モーダルコンポーネントのインポート
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 export default function Home() {
   const {
@@ -93,7 +87,7 @@ export default function Home() {
 
   return (
     <div
-      className={`bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay bg-fixed ${Kaisei.className}`}
+      className="bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay bg-fixed"
     >
       <div className="container w-fit min-h-screen mx-auto p-4">
         <div className="mb-8">

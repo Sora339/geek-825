@@ -1,10 +1,12 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Kaisei_Decol } from "next/font/google";
 
-
-const inter = Inter({ subsets: ["latin"] });
+const Kaisei = Kaisei_Decol({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: { default: "Maclay Rush", template: "%s|Maclay Rush" },
@@ -18,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="bg-[#252525]">
-        <body className={inter.className}>
+        <body className={Kaisei.className}>
           {children}
         </body>
     </html>

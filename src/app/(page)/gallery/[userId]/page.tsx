@@ -17,12 +17,6 @@ import { Book } from "@/../src/types/game"; // 指定されたBook型をイン�
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase/client"; // Firebase auth
-import { Kaisei_Decol } from "next/font/google";
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 const UserBookshelf = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -127,7 +121,7 @@ const UserBookshelf = () => {
 
   return (
     <div
-      className={`bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+      className="bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
     >
       <div className="flex flex-col min-h-screen">
         <Header />

@@ -4,13 +4,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
-import { Kaisei_Decol } from "next/font/google";
 import Link from "next/link";
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -28,7 +22,7 @@ export default function Home() {
 
   return (
     <div
-      className={`relative bg-[url('/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.40)] bg-blend-overlay h-[100vh] flex items-center justify-center text-white ${Kaisei.className}`}
+      className="relative bg-[url('/image/bg-top.webp')] bg-cover bg-[rgba(0,0,0,0.40)] bg-blend-overlay h-[100vh] flex items-center justify-center text-white"
     >
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-40 z-10"></div>
       <div className="relative z-20 text-center px-4">

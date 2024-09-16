@@ -9,13 +9,6 @@ import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Kaisei_Decol } from "next/font/google";
-import Image from "next/image";
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 type UserData = {
   name: string;
@@ -72,7 +65,7 @@ const MyPage = () => {
 
   return (
     <div
-      className={`bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed ${Kaisei.className}`}
+      className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
     >
       <div className="flex flex-col min-h-screen">
         <Header />

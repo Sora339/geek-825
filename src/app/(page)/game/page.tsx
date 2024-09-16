@@ -10,13 +10,7 @@ import Result from "../../components/game/result";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Kaisei_Decol } from "next/font/google";
 import SubSet from "@/app/components/game/subSet"; // モーダルコンポーネントのインポート
-
-const Kaisei = Kaisei_Decol({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 export default function Home() {
   const {
@@ -38,7 +32,7 @@ export default function Home() {
     isBooksReady, // 本が揃っているかの状態
   } = useBooks();
 
-  const [timeLeft, setTimeLeft] = useState<number>(10); // 3分間のタイマー（秒単位）
+  const [timeLeft, setTimeLeft] = useState<number>(180); // 3分間のタイマー（秒単位）
   const [showResult, setShowResult] = useState<boolean>(false); // モーダル表示状態を管理
   const [userId, setUserId] = useState<string | null>(null); // userIdの状態
   const router = useRouter();
@@ -93,7 +87,7 @@ export default function Home() {
 
   return (
     <div
-      className={`bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay bg-fixed ${Kaisei.className}`}
+      className="bg-[url('../../public/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay bg-fixed"
     >
       <div className="container w-fit min-h-screen mx-auto p-4">
         <div className="mb-8">

@@ -5,7 +5,7 @@ import { collection, getDocs, query, where, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Book } from "@/../src/types/game"; // 指定されたBook型をインポート
+import { Book } from "@/../src/types/game";
 import Header from "@/app/layout/header/header";
 import Footer from "@/app/layout/footer/footer";
 import { Kaisei_Decol } from "next/font/google";

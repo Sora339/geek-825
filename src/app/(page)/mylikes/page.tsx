@@ -1,6 +1,6 @@
 "use client";
 
-import { Book } from "@/../src/types/game"; // 共通の型をインポート
+import { Book } from "@/../src/types/game";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getDoc, doc, updateDoc, arrayRemove } from "firebase/firestore";
@@ -34,7 +34,6 @@ const MyLikes = () => {
           const likedBookIds = data.likes || [];
           setIsPublic(data.public || false); // 公開設定の初期値を設定
 
-          // Google Books APIを使って各本の情報を取得
           const bookPromises = likedBookIds.map((bookId: string) =>
             fetchBookDetails(bookId)
           );

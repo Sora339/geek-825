@@ -9,6 +9,7 @@ import LoginButton from "./LoginButton";
 import LogOutButton from "./logOutButton";
 import StartButton from "@/app/components/top/startButton";
 import { Kaisei_Decol } from "next/font/google";
+import { Crown, GalleryHorizontalEnd, LibraryBig } from "lucide-react";
 
 const Kaisei = Kaisei_Decol({
   weight: "400",
@@ -32,9 +33,18 @@ const Header = () => {
     <div className={Kaisei.className}>
       <header className="bg-[#252525] h-[80px]">
         <div className="container flex h-full max-w-[1200px] items-center justify-between" style={{ scrollbarGutter: 'stable' }}>
-          <Link href="/" className="flex">
-            <h1 className="flex items-center text-white text-3xl font-bold">Maclay Rush</h1>
-          </Link>
+            <div className="flex gap-10 items-center">
+              <Link href="/" className="flex">
+                <h1 className="flex items-center text-white text-3xl font-bold">Maclay Rush</h1>
+              </Link>
+              <nav>
+                <ul className="text-white flex gap-10">
+                  <li><a className="flex gap-2" href="/mylikes"><LibraryBig />My本棚</a></li>
+                  <li><a className="flex gap-2" href="/gallery"><GalleryHorizontalEnd />ギャラリー</a></li>
+                  <li><a className="flex gap-2" href="/rankingPage"><Crown />ランキング</a></li>
+                </ul>
+              </nav>
+            </div>
           <div>
             {user ? (
               <div>

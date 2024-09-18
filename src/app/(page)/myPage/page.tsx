@@ -65,15 +65,22 @@ const MyPage = () => {
 
   return (
     <div
-      className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
+      className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative"
     >
+      
       <div className="flex flex-col min-h-screen">
         <Header />
+      <div>
+        {/* <img 
+        src= "/image/membercard.jpg"
+        className="absolute w-72 top-100 left-100  z-10 mx-auto"
+        /> */}
+      </div>
         <div className="container mx-auto p-4 flex-grow">
           {userData ? (
             <div>
               <h1 className="text-5xl text-white">図書館証</h1>
-              <div className="flex mt-36 gap-24 justify-center items-center">
+              <div className="flex mt-16 gap-24 justify-center items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-max px-20 mx-auto h-80">
                 <div>
                   <Avatar className="mx-auto size-48">
                     <AvatarImage src={userData.photoURL} className="size-48" />
@@ -112,7 +119,7 @@ const MyPage = () => {
           ) : (
             <div>User data not found.</div>
           )}
-          <div className="flex justify-center gap-14 pt-5 mt-36">
+          <div className="flex justify-center gap-14 pt-5 mt-20">
             <div>
               <Link href="/game">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">

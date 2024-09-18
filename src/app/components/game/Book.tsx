@@ -12,7 +12,8 @@ interface BookProps {
 
 const Book: React.FC<BookProps> = ({ id, title, isBorrowed, onLendBook, onCheckBorrowed }) => {
   return (
-    <div className="p-4 min-w-24 h-[700px] border rounded bg-white flex flex-col items-center">
+    <div className="p-4 w-24 h-[700px] border rounded bg-[url('/image/gamebooks.png')] text-white flex flex-col items-center">
+      <div></div>
       <style jsx>{`
         .writing-vertical {
           writing-mode: vertical-rl;

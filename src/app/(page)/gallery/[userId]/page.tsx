@@ -143,8 +143,11 @@ const UserBookshelf = () => {
                         <IoHeartSharp className="text-red-500 text-2xl" />
                       </div>
                     ) : (
-                      <IoHeartOutline className="text-gray-500 text-2xl" />
-                    )}
+                      <div className="flex gap-1 justify-end">
+                        <p>お気に入り</p>
+                        <IoHeartOutline className="text-gray-500 text-2xl" />
+                      </div>
+                    )} 
                   </button>
                   <h2 className="text-xl font-semibold">
                     {book.volumeInfo.title}

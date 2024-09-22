@@ -9,6 +9,7 @@ import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from 'framer-motion'
 
 type UserData = {
   name: string;
@@ -60,7 +61,17 @@ const MyPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div 
+            className="absolute left-1/2 top-1/2 ml-[-50px] mt-[-10px] text-center font-bold">
+            <motion.div 
+            animate={{ x: [0, 200, 0] }}
+            className="block bg-white w-[100px] h-1 mt-1 rounded">
+            <span></span>
+            <span></span>
+            <span></span>
+            </motion.div>
+            <p className="text-white">LOADING</p>
+          </div>;
   }
 
   return (
@@ -70,44 +81,43 @@ const MyPage = () => {
       
       <div className="flex flex-col min-h-screen">
         <Header />
-      <div>
-        {/* <img 
-        src= "/image/membercard.jpg"
-        className="absolute w-72 top-100 left-100  z-10 mx-auto"
-        /> */}
-      </div>
+      
         <div className="container mx-auto p-4 flex-grow">
           {userData ? (
             <div>
-              <h1 className="text-5xl text-white">図書館証</h1>
-              <div className="flex mt-16 gap-24 justify-center items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-max px-20 mx-auto h-80">
+              
+              <div className="mt-5 ml-14 items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
                 <div>
-                  <Avatar className="mx-auto size-48">
-                    <AvatarImage src={userData.photoURL} className="size-48" />
+                  <h2 className="text-white text-4xl mb-3">図書館証</h2>
+                  <Avatar className="size-24 ml-2">
+                    <AvatarImage src={userData.photoURL} className="size-24" />
                     <AvatarFallback>{userData.name}</AvatarFallback>
                   </Avatar>
                 </div>
-                <div className="h-40 w-[500px]">
+                <div className="text-center">
+                  <p className="text-white text-2xl mt-10 mb-16">入場券 <br /> 当日 23:59まで5回限り有効</p>
+                </div>
+                <div className="h-40 w-[350px] mx-auto">
                   <div className="h-40 flex flex-col justify-between">
-                    <div className="flex gap-5">
-                      <p className="text-4xl  text-white">氏名: </p>
-                      <h1 className="text-4xl ml-auto text-white">
+                    <div className="flex">
+                      <p className="text-3xl  text-white">氏名: </p>
+                      <h1 className="text-3xl ml-auto text-white">
                         {userData.name}
                       </h1>
                     </div>
                     <hr />
-                    <div className="flex gap-5">
-                      <p className="text-4xl text-white">経験値: </p>
+                    <div className="flex">
+                      <p className="text-3xl text-white">経験値: </p>
                       {totalScore !== null && (
-                        <h1 className="text-4xl ml-auto text-white">
+                        <h1 className="text-3xl ml-auto text-white">
                           {totalScore}
                         </h1>
                       )}
                     </div>
                     <hr />
-                    <div className="flex gap-5">
-                      <p className="text-4xl text-white">会員ランク: </p>
-                      <h1 className="text-4xl ml-auto text-white">
+                    <div className="flex">
+                      <p className="text-3xl text-white">会員ランク: </p>
+                      <h1 className="text-3xl ml-auto text-white">
                         {getRank(totalScore)}
                       </h1>
                     </div>
@@ -119,35 +129,51 @@ const MyPage = () => {
           ) : (
             <div>User data not found.</div>
           )}
-          <div className="flex justify-center gap-14 pt-5 mt-20">
-            <div>
+          <div className="absolute top-16 right-14 items-center pt-28">
+            <motion.div 
+              initial={{ x: 100 }}
+              animate={{ x: -200 }}
+              transition={{ type:'spring' , duration: 0.5 }}
+              className="pb-16">
               <Link href="/game">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                   <p className="text-5xl ">スタート</p>
                 </Button>
               </Link>
-            </div>
-            <div className="pb-7">
+            </motion.div>
+            <motion.div 
+              initial={{ x: 100 }}
+              animate={{ x: -300 }}
+              transition={{ type:'spring' , duration: 0.5 }}
+              className="pb-16">
               <Link href="/mylikes">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                   <p className="text-5xl ">My本棚</p>
                 </Button>
               </Link>
-            </div>
-            <div className="pb-7">
+            </motion.div>
+            <motion.div 
+              initial={{ x: 100 }}
+              animate={{ x: -170 }}
+              transition={{ type:'spring' , duration: 0.5 }}
+              className="pb-16">
               <Link href="/gallery">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                   <p className="text-5xl ">ギャラリー</p>
                 </Button>
               </Link>
-            </div>
-            <div className="pb-7">
+            </motion.div>
+            <motion.div 
+              initial={{ x: 100 }}
+              animate={{ x: -400 }}
+              transition={{ type:'spring' , duration: 0.5 }}
+              className="pb-16">
               <Link href="/rankingPage">
                 <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                   <p className="text-5xl ">ランキング</p>
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
 

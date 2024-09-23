@@ -95,7 +95,7 @@ const MyPage = () => {
                   </Avatar>
                 </div>
                 <div className="text-center">
-                  <p className="text-white text-2xl mt-10 mb-16">入場券 <br /> 当日 23:59まで5回限り有効</p>
+                  <p className="text-white text-2xl mt-10 mb-16">入場資格 <br /> 当日 23:59まで5回限り有効</p>
                 </div>
                 <div className="h-40 w-[350px] mx-auto">
                   <div className="h-40 flex flex-col justify-between">

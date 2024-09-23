@@ -1,0 +1,50 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int        @id @default(autoincrement())
+  name     String
+  email    String     @unique
+  photoURL String?
+  public   Boolean
+  gameResults GameResult[]
+  userBooks  UserBook[]
+}
+
+model GameResult {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  timestamp DateTime
+  score     Int
+
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model UserBook {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  content   String
+  timestamp DateTime
+
+  user      User     @relation(fields: [userId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id])
+}
+
+model Book {
+  id           Int      @id @default(autoincrement())
+  thumbnailURL String?
+  saleability  Boolean
+  buyLink      String?
+  description  String?
+
+  userBooks    UserBook[]
+}

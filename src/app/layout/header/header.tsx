@@ -10,6 +10,8 @@ import LogOutButton from "./logOutButton";
 import StartButton from "@/app/components/top/startButton";
 import { Kaisei_Decol } from "next/font/google";
 import { Crown, GalleryHorizontalEnd, LibraryBig } from "lucide-react";
+import HowToPlay from "@/app/components/top/howToPlay/howToPlay";
+import BgmPlayer from "@/app/components/bgmPlay";
 
 const Kaisei = Kaisei_Decol({
   weight: "400",
@@ -45,7 +47,13 @@ const Header = () => {
                 </ul>
               </nav>
             </div>
-          <div>
+          <div className="flex gap-5">
+            <div>
+              <BgmPlayer />
+            </div>
+            <div>
+              <HowToPlay />
+            </div>
             {user ? (
               <div>
                 <LogOutButton />

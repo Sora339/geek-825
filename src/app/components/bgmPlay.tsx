@@ -8,7 +8,7 @@ const BgmPlayer: React.FC = () => {
 
   useEffect(() => {
     if (audioRef.current) {
-      isMuted ? audioRef.current.pause() : audioRef.current.play();
+      !isMuted ? audioRef.current.pause() : audioRef.current.play();
     }
   }, [isMuted]);
 
@@ -23,7 +23,7 @@ const BgmPlayer: React.FC = () => {
       <Button 
         className='absolute right-3 bg-[#252525]'
         onClick={() => setIsMuted(!isMuted)}>
-        {isMuted ? <VolumeX /> : <Volume2 /> }
+        {isMuted ? <Volume2 /> : <VolumeX /> }
       </Button>
     </div>
   );

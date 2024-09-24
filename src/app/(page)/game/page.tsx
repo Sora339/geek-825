@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import SubSet from "@/app/components/game/subSet"; // モーダルコンポーネントのインポート
+import Loading from "@/app/components/loading";
 
 export default function Home() {
   const {
@@ -86,94 +87,97 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="bg-[url('/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay"
-    >
-      <div className="container w-fit min-h-screen mx-auto p-4">
-        <div className="mb-8">
-          <Link href={"/myPage"}>
-            <Button
-              onClick={handleGameEnd}
-              className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded z-20"
-            >
-              ゲーム終了
-            </Button>
-          </Link>
-          
-          <div className="flex h-[700px] justify-center">
-            <div className="top-0 mr-2 p-4 w-[700px] min-h-[500px] ">
-             <div 
-             className="bg-[url('../../public/image/clipboard.png')] 
-               bg-[length:900px_950px] bg-no-repeat bg-bottom p-8 w-fixed h-fixed"
+    <div>
+      <Loading />
+      <div
+        className="bg-[url('/image/bg_1.webp')] bg-cover bg-[rgba(0,0,0,0.60)] h-full bg-blend-overlay"
+      >
+        <div className="container w-fit min-h-screen mx-auto p-4">
+          <div className="mb-8">
+            <Link href={"/myPage"}>
+              <Button
+                onClick={handleGameEnd}
+                className="mt-4 bg-green-500 text-white mb-6 py-2 px-4 rounded z-20"
               >
-              <Image
-                  src={"/image/cus_" + (users % 8) + ".webp"}
-                  alt="customer"
-                  priority
-                  width={250}
-                  height={250}
-                  className="mx-auto m-0"
-                ></Image>
-                <p>現在のポイント: {points}</p>
-                <p className="mb-2">残り時間: {formatTime(timeLeft)}</p>{" "}
-                {requestedBook && (
-                  <div className="mb-4">
-                    <h2 className="text-xl h-[100px] overflow-y-scroll">
-                      利用者No.{users}の希望:
-                      <br /> {requestedBook.volumeInfo.title}
-                    </h2>
-                    <div className="mt-2 h-[10px]">
-                      {/* メッセージの色を変更 */}
-                      <p
-                        style={{
-                          color:
-                            message === "正しく貸し出せました。" ||
-                            message === "正解！この本は貸出中です！"
-                              ? "green"
-                              : "red",
-                        }}
-                      >
-                        {message}
-                      </p>
+                ゲーム終了
+              </Button>
+            </Link>
+            
+            <div className="flex h-[700px] justify-center">
+              <div className="top-0 mr-2 p-4 w-[700px] min-h-[500px] ">
+              <div 
+              className="bg-[url('../../public/image/clipboard.png')] 
+                bg-[length:900px_950px] bg-no-repeat bg-bottom p-8 w-fixed h-fixed"
+                >
+                <Image
+                    src={"/image/cus_" + (users % 8) + ".webp"}
+                    alt="customer"
+                    priority
+                    width={250}
+                    height={250}
+                    className="mx-auto m-0"
+                  ></Image>
+                  <p>現在のポイント: {points}</p>
+                  <p className="mb-2">残り時間: {formatTime(timeLeft)}</p>{" "}
+                  {requestedBook && (
+                    <div className="mb-4">
+                      <h2 className="text-xl h-[100px] overflow-y-scroll">
+                        利用者No.{users}の希望:
+                        <br /> {requestedBook.volumeInfo.title}
+                      </h2>
+                      <div className="mt-2 h-[10px]">
+                        {/* メッセージの色を変更 */}
+                        <p
+                          style={{
+                            color:
+                              message === "正しく貸し出せました。" ||
+                              message === "正解！この本は貸出中です！"
+                                ? "green"
+                                : "red",
+                          }}
+                        >
+                          {message}
+                        </p>
+                    </div>
                   </div>
-                </div>
-              )}
-                <div className="mt-6">
-                  <p className="mb-2 text-xl">返却通知</p>
-                  <div className="h-52 overflow-y-scroll">
-                    {returnNotifications.map((notification, index) => (
-                      <p key={index} className="bg-gray-200 p-2 rounded mb-2 ">
-                        {notification}
-                      </p>
-                    ))}
+                )}
+                  <div className="mt-6">
+                    <p className="mb-2 text-xl">返却通知</p>
+                    <div className="h-52 overflow-y-scroll">
+                      {returnNotifications.map((notification, index) => (
+                        <p key={index} className="bg-gray-200 p-2 rounded mb-2 ">
+                          {notification}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="h-[700px]">
-              <Bookshelf
-                books={books}
-                onLendBook={handleLendBook}
-                onCheckBorrowed={handleCheckBorrowed}
-              />
+              <div className="h-[700px]">
+                <Bookshelf
+                  books={books}
+                  onLendBook={handleLendBook}
+                  onCheckBorrowed={handleCheckBorrowed}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <SubSet
-        isModalOpen={isModalOpen}
-        setSubject={setSubject}
-        handleStartGame={handleStartGame}
-        errorMessage={errorMessage}
-      />
-      {showResult && userId && (
-        <Result
-          score={points}
-          books={books}
-          userId={userId}
-          onReset={handleResetGame}
+        <SubSet
+          isModalOpen={isModalOpen}
+          setSubject={setSubject}
+          handleStartGame={handleStartGame}
+          errorMessage={errorMessage}
         />
-      )}
+        {showResult && userId && (
+          <Result
+            score={points}
+            books={books}
+            userId={userId}
+            onReset={handleResetGame}
+          />
+        )}
+      </div>
     </div>
   );
 }

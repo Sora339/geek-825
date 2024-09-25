@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
+import Loading from "../loading";
 
 interface SubSetProps {
   isModalOpen: boolean;
@@ -35,9 +36,11 @@ const SubSet: React.FC<SubSetProps> = ({
             </Button>
           </Link>
           <Button
+            
             onClick={handleStartGame}
             className="bg-blue-500 text-white rounded hover:bg-blue-600"
           >
+            <Loading />
             決定
           </Button>
         </div>

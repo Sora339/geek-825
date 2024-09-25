@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from 'framer-motion'
+import Loading from "@/app/components/loading";
 
 type UserData = {
   name: string;
@@ -61,123 +62,129 @@ const MyPage = () => {
   };
 
   if (loading) {
-    return <div 
-            className="absolute left-1/2 top-1/2 ml-[-50px] mt-[-10px] text-center font-bold">
-            <motion.div 
-            animate={{ x: [0, 200, 0] }}
-            className="block bg-white w-[100px] h-1 mt-1 rounded">
-            <span></span>
-            <span></span>
-            <span></span>
-            </motion.div>
-            <p className="text-white">LOADING</p>
+    return <div className="fixed inset-0 bg-gray-900 text-white text-2xl">
+            <div className="flex items-center justify-center h-screen">
+              <img className="mr-4" src="/image/stack-of-books.png" alt="" />
+              <p>Now Loading...</p>
+            </div>
           </div>;
   }
 
   return (
-    <div
-      className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative"
-    >
-      
-      <div className="flex flex-col min-h-screen">
-        <Header />
-      
-        <div className="container mx-auto p-4 flex-grow">
-          {userData ? (
-            <div>
-              
-              <div className="mt-5 ml-14 items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
-                <div>
-                  <h2 className="text-white text-4xl mb-3">図書館証</h2>
-                  <Avatar className="size-24 ml-2">
-                    <AvatarImage src={userData.photoURL} className="size-24" />
-                    <AvatarFallback>{userData.name}</AvatarFallback>
-                  </Avatar>
-                </div>
-                <div className="text-center">
-                  <p className="text-white text-2xl mt-10 mb-16">入場資格 <br /> 当日 23:59まで5回限り有効</p>
-                </div>
-                <div className="h-40 w-[350px] mx-auto">
-                  <div className="h-40 flex flex-col justify-between">
-                    <div className="flex">
-                      <p className="text-3xl  text-white">氏名: </p>
-                      <h1 className="text-3xl ml-auto text-white">
-                        {userData.name}
-                      </h1>
-                    </div>
-                    <hr />
-                    <div className="flex">
-                      <p className="text-3xl text-white">経験値: </p>
-                      {totalScore !== null && (
+    <div>
+      <Loading />
+      <div
+        className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative"
+      >
+        
+        <div className="flex flex-col min-h-screen">
+          <Header />
+        
+          <div className="container mx-auto p-4 flex-grow items-center flex">
+            {userData ? (
+              <div>
+                
+                <div className="container mt-5 ml-14 items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
+                  <div>
+                      <h2 className="text-white text-4xl my-7">図書館証</h2>
+                      <div className="flex items-center gap-10">
+                          <Avatar className="size-24 ml-2">
+                            <AvatarImage src={userData.photoURL} className="size-24" />
+                            <AvatarFallback>{userData.name}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex justify-center">
+                            <p className="text-2xl  text-white">氏名: </p>
+                            <h1 className="text-3xl ml-4 text-white">
+                              {userData.name}
+                            </h1>
+                          </div>
+                      </div>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-white text-2xl mt-10 mb-16">入場資格 <br /> 当日 23:59まで5回限り有効</p>
+                  </div>
+                  <div className="h-40 w-[350px] mx-auto">
+                    <div className="h-40 flex flex-col justify-between">
+                      
+                      <div className="flex">
+                        <p className="text-3xl text-white">経験値: </p>
+                        {totalScore !== null && (
+                          <h1 className="text-3xl ml-auto text-white">
+                            {totalScore}
+                          </h1>
+                        )}
+                      </div>
+                      <hr />
+                      <div className="flex">
+                        <p className="text-3xl text-white">会員ランク: </p>
                         <h1 className="text-3xl ml-auto text-white">
-                          {totalScore}
+                          {getRank(totalScore)}
                         </h1>
-                      )}
+                      </div>
+                      <hr />
+                      <div className="flex">
+                        <p className="text-3xl  text-white">仮置: </p>
+                        <h1 className="text-3xl ml-auto text-white">
+                          30pxの実績用
+                        </h1>
+                      </div>
                     </div>
-                    <hr />
-                    <div className="flex">
-                      <p className="text-3xl text-white">会員ランク: </p>
-                      <h1 className="text-3xl ml-auto text-white">
-                        {getRank(totalScore)}
-                      </h1>
-                    </div>
-                    <hr />
                   </div>
                 </div>
               </div>
+            ) : (
+              <div>User data not found.</div>
+            )}
+            <div className="absolute top-16 right-14 items-center pt-28">
+              <motion.div 
+                initial={{ x: 100 }}
+                animate={{ x: -200 }}
+                transition={{ type:'spring' , duration: 0.5 }}
+                className="pb-16">
+                <Link href="/game">
+                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                    <p className="text-5xl ">スタート</p>
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div 
+                initial={{ x: 100 }}
+                animate={{ x: -300 }}
+                transition={{ type:'spring' , duration: 0.5 }}
+                className="pb-16">
+                <Link href="/mylikes">
+                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                    <p className="text-5xl ">My本棚</p>
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div 
+                initial={{ x: 100 }}
+                animate={{ x: -170 }}
+                transition={{ type:'spring' , duration: 0.5 }}
+                className="pb-16">
+                <Link href="/gallery">
+                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                    <p className="text-5xl ">ギャラリー</p>
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div 
+                initial={{ x: 100 }}
+                animate={{ x: -400 }}
+                transition={{ type:'spring' , duration: 0.5 }}
+                className="pb-16">
+                <Link href="/rankingPage">
+                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                    <p className="text-5xl ">ランキング</p>
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
-          ) : (
-            <div>User data not found.</div>
-          )}
-          <div className="absolute top-16 right-14 items-center pt-28">
-            <motion.div 
-              initial={{ x: 100 }}
-              animate={{ x: -200 }}
-              transition={{ type:'spring' , duration: 0.5 }}
-              className="pb-16">
-              <Link href="/game">
-                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl ">スタート</p>
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div 
-              initial={{ x: 100 }}
-              animate={{ x: -300 }}
-              transition={{ type:'spring' , duration: 0.5 }}
-              className="pb-16">
-              <Link href="/mylikes">
-                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl ">My本棚</p>
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div 
-              initial={{ x: 100 }}
-              animate={{ x: -170 }}
-              transition={{ type:'spring' , duration: 0.5 }}
-              className="pb-16">
-              <Link href="/gallery">
-                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl ">ギャラリー</p>
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div 
-              initial={{ x: 100 }}
-              animate={{ x: -400 }}
-              transition={{ type:'spring' , duration: 0.5 }}
-              className="pb-16">
-              <Link href="/rankingPage">
-                <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                  <p className="text-5xl ">ランキング</p>
-                </Button>
-              </Link>
-            </motion.div>
           </div>
-        </div>
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
     </div>
   );

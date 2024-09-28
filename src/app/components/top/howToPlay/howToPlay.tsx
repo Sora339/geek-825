@@ -1,11 +1,9 @@
-import { Button } from '@/components/ui/button'
+import React from 'react'
 
 export default function HowToPlay() {
   return (
     <div>
-      <Button 
-        className="bg-[#808080] text-[#ffffff]  w-full">あそびかた
-      </Button>
+      <img className='w-[1000px]' src="/image/startmenu.png" alt="" />
     </div>
   )
 }

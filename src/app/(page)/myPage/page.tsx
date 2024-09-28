@@ -65,7 +65,7 @@ const MyPage = () => {
     return <div className="fixed inset-0 bg-gray-900 text-white text-2xl">
             <div className="flex items-center justify-center h-screen">
               <img className="mr-4" src="/image/stack-of-books.png" alt="" />
-              <p>Now Loading...</p>
+              <p>Loading...</p>
             </div>
           </div>;
   }
@@ -93,7 +93,6 @@ const MyPage = () => {
                             <AvatarFallback>{userData.name}</AvatarFallback>
                           </Avatar>
                           <div className="flex justify-center">
-                            <p className="text-2xl  text-white">氏名: </p>
                             <h1 className="text-3xl ml-4 text-white">
                               {userData.name}
                             </h1>
@@ -141,8 +140,8 @@ const MyPage = () => {
                 animate={{ x: -200 }}
                 transition={{ type:'spring' , duration: 0.5 }}
                 className="pb-16">
-                <Link href="/game">
-                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
+                <Link href="/game">                
+                  <Button className="h-max bg-[#404040] shadow-sm hover:bg-[#303030]">
                     <p className="text-5xl ">スタート</p>
                   </Button>
                 </Link>

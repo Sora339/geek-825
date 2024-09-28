@@ -104,12 +104,11 @@ const MyLikes = () => {
       console.error("Failed to update public setting:", error);
     }
   };
-
   if (loading) {
     return <div className="fixed inset-0 bg-gray-900 text-white text-2xl">
             <div className="flex items-center justify-center h-screen">
               <img className="mr-4" src="/image/stack-of-books.png" alt="" />
-              <p>Now Loading...</p>
+              <p className="tracking-widest">Loading...</p>
             </div>
           </div>;
   }

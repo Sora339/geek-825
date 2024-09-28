@@ -10,8 +10,9 @@ import LogOutButton from "./logOutButton";
 import StartButton from "@/app/components/top/startButton";
 import { Kaisei_Decol } from "next/font/google";
 import { Crown, GalleryHorizontalEnd, LibraryBig } from "lucide-react";
-import HowToPlay from "@/app/components/top/howToPlay/howToPlay";
 import BgmPlayer from "@/app/components/bgmPlay";
+import HowToPlaySection from "@/app/components/top/howToPlay/howToSection";
+
 
 const Kaisei = Kaisei_Decol({
   weight: "400",
@@ -52,7 +53,7 @@ const Header = () => {
               <BgmPlayer />
             </div>
             <div>
-              <HowToPlay />
+              <HowToPlaySection />
             </div>
             {user ? (
               <div>

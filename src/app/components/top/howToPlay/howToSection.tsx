@@ -18,10 +18,10 @@ const ModalComponent = ({ show, onClose, children }: ModalProps) => {
   }
 
   return (
-    <div className='z-40' style={styles.modalBackdrop}>
+    <div className='z-10' style={styles.modalBackdrop}>
       <div style={styles.modalContent}>
         {children}
-        <button className='absolute top-40 right-64 text-white' onClick={onClose}>
+        <button className='absolute top-24 right-64 text-white' onClick={onClose}>
         <X />
         </button>
       </div>

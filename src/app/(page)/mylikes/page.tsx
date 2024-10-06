@@ -90,33 +90,35 @@ const MyLikes = () => {
   return (
     <div>
       <Loading />
-      <div className="bg-[url('/image/image_fx_-34.jpg')]">
+      <div className="bg-[url('/image/image_fx_-34.jpg')] bg-cover">
         <div className="flex flex-col min-h-screen">
           <Header />
           <div className="container mx-auto flex-grow">
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-5xl text-white">My本棚</h1>
             </div>
-            <img className="h-screen w-full" src="/image/image_fx_-29.jpg" />
-            <div 
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-4 w-[1200px]
-            absolute top-56 left-32">
-              {likedBooks.map((book) => (
-                <div key={book.id}>
-                  
-                  <div className="flex justify-center">
-                    <Image
-                      src={book.volumeInfo.imageLinks?.smallThumbnail || ""}
-                      alt={book.volumeInfo.title}
-                      width={120}
-                      height={200}
-                      objectFit="cover"
-                      className="rounded cursor-pointer mb-14"
-                      onClick={() => handleImageClick(book)}
-                    />
+            <div className="">
+              <img className="h-screen w-full" src="/image/image_fx_-29.jpg" />
+              <div 
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-4 w-[1200px]
+              absolute top-56 left-32">
+                {likedBooks.map((book) => (
+                  <div key={book.id}>
+                    
+                    <div className="flex justify-center">
+                      <Image
+                        src={book.volumeInfo.imageLinks?.smallThumbnail || ""}
+                        alt={book.volumeInfo.title}
+                        width={120}
+                        height={200}
+                        objectFit="cover"
+                        className="rounded cursor-pointer mb-14"
+                        onClick={() => handleImageClick(book)}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
           <Footer />

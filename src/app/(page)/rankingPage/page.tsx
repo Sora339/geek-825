@@ -89,14 +89,14 @@ const Ranking = () => {
     fetchRankings();
   }, []);
 
-  if (loading) {
-    return <div className="fixed inset-0 bg-gray-900 text-white text-2xl"> 
-            <div className="flex items-center justify-center h-screen">
-              <img className="mr-4" src="/image/stack-of-books.png" alt="" />
-              <p>Loading...</p>
-            </div>
-          </div>;
-  }
+  // if (loading) {
+  //   return <div className="fixed inset-0 bg-gray-900 text-white text-2xl"> 
+  //           <div className="flex items-center justify-center h-screen">
+  //             <img className="mr-4" src="/image/stack-of-books.png" alt="" />
+  //             <p>Loading...</p>
+  //           </div>
+  //         </div>;
+  // }
 
   return (
     <div>

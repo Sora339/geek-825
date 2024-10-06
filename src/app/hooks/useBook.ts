@@ -41,7 +41,7 @@ const useBooks = () => {
     let attempts = 0;
 
     while (allBooks.length < 8 && attempts < 3) {
-      const randomStartIndex = Math.floor(Math.random() * 400);
+      const randomStartIndex = Math.floor(Math.random() * 100);
       console.log(randomStartIndex);
       try {
         const response = await fetch(

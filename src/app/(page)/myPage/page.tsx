@@ -9,7 +9,7 @@ import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 import Loading from "@/app/components/loading";
 
 type UserData = {
@@ -61,50 +61,48 @@ const MyPage = () => {
     return "新米司書";
   };
 
-  if (loading) {
-    return <div className="fixed inset-0 bg-gray-900 text-white text-2xl">
-            <div className="flex items-center justify-center h-screen">
-              <img className="mr-4" src="/image/stack-of-books.png" alt="" />
-              <p>Loading...</p>
-            </div>
-          </div>;
-  }
+  // if (loading) {
+  //   return <div className="fixed inset-0 bg-gray-900 text-white text-2xl">
+  //           <div className="flex items-center justify-center h-screen">
+  //             <img className="mr-4" src="/image/stack-of-books.png" alt="" />
+  //             <p>Loading...</p>
+  //           </div>
+  //         </div>;
+  // }
 
   return (
     <div>
       <Loading />
-      <div
-        className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative"
-      >
-        
+      <div className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative">
         <div className="flex flex-col min-h-screen">
           <Header />
-        
-          <div className="container mx-auto p-4 flex-grow items-center flex">
+
+          <div className="container mx-auto p-4 flex-grow items-center flex gap-20">
             {userData ? (
               <div>
-                
-                <div className="container mt-5 ml-14 items-center  bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
-                  <div>
-                      <h2 className="text-white text-4xl my-7">図書館証</h2>
-                      <div className="flex items-center gap-10">
-                          <Avatar className="size-24 ml-2">
-                            <AvatarImage src={userData.photoURL} className="size-24" />
-                            <AvatarFallback>{userData.name}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex justify-center">
-                            <h1 className="text-3xl ml-4 text-white">
-                              {userData.name}
-                            </h1>
-                          </div>
+                <div className="container items-center bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
+                  <div className="p-4">
+                    <h2 className="text-white text-4xl">図書館証</h2>
+                    <div className="flex items-center justify-center mt-6 gap-10">
+                      <Avatar className="size-20 ml-2">
+                        <AvatarImage
+                          src={userData.photoURL}
+                          className="size-20"
+                        />
+                        <AvatarFallback>{userData.name}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex justify-center">
+                        <h1 className="text-3xl text-white">{userData.name}</h1>
                       </div>
+                    </div>
                   </div>
                   <div className="text-center">
-                    <p className="text-white text-2xl mt-10 mb-16">入場資格 <br /> 当日 23:59まで5回限り有効</p>
+                    <p className="text-white text-2xl mt-6 mb-16">
+                      入場資格 <br /> 当日 23:59まで5回限り有効
+                    </p>
                   </div>
                   <div className="h-40 w-[350px] mx-auto">
                     <div className="h-40 flex flex-col justify-between">
-                      
                       <div className="flex">
                         <p className="text-3xl text-white">経験値: </p>
                         {totalScore !== null && (
@@ -134,45 +132,50 @@ const MyPage = () => {
             ) : (
               <div>User data not found.</div>
             )}
+            <div className="border-[1px] h-[70vh]"></div>
             <div className="absolute top-16 right-14 items-center pt-28">
-              <motion.div 
+              <motion.div
                 initial={{ x: 100 }}
                 animate={{ x: -200 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
-                <Link href="/game">                
+                transition={{ type: "spring", duration: 0.5 }}
+                className="pb-16"
+              >
+                <Link href="/game">
                   <Button className="h-max bg-[#404040] shadow-sm hover:bg-[#303030]">
                     <p className="text-5xl ">スタート</p>
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div 
+              <motion.div
                 initial={{ x: 100 }}
                 animate={{ x: -300 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
+                transition={{ type: "spring", duration: 0.5 }}
+                className="pb-16"
+              >
                 <Link href="/mylikes">
                   <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                     <p className="text-5xl ">My本棚</p>
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div 
+              <motion.div
                 initial={{ x: 100 }}
                 animate={{ x: -170 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
+                transition={{ type: "spring", duration: 0.5 }}
+                className="pb-16"
+              >
                 <Link href="/gallery">
                   <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                     <p className="text-5xl ">ギャラリー</p>
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div 
+              <motion.div
                 initial={{ x: 100 }}
                 animate={{ x: -400 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
+                transition={{ type: "spring", duration: 0.5 }}
+                className="pb-16"
+              >
                 <Link href="/rankingPage">
                   <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
                     <p className="text-5xl ">ランキング</p>

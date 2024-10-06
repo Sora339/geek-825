@@ -40,7 +40,6 @@ const SubSet: React.FC<SubSetProps> = ({
             onClick={handleStartGame}
             className="bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            <Loading />
             決定
           </Button>
         </div>

@@ -134,51 +134,54 @@ const MyPage = () => {
             ) : (
               <div>User data not found.</div>
             )}
-            <div className="absolute top-16 right-14 items-center pt-28">
-              <motion.div 
-                initial={{ x: 100 }}
-                animate={{ x: -200 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
-                <Link href="/game">                
-                  <Button className="h-max bg-[#404040] shadow-sm hover:bg-[#303030]">
-                    <p className="text-5xl ">スタート</p>
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div 
-                initial={{ x: 100 }}
-                animate={{ x: -300 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
-                <Link href="/mylikes">
-                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                    <p className="text-5xl ">My本棚</p>
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div 
-                initial={{ x: 100 }}
-                animate={{ x: -170 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
-                <Link href="/gallery">
-                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                    <p className="text-5xl ">ギャラリー</p>
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div 
-                initial={{ x: 100 }}
-                animate={{ x: -400 }}
-                transition={{ type:'spring' , duration: 0.5 }}
-                className="pb-16">
-                <Link href="/rankingPage">
-                  <Button className="h-max bg-[#404040] shadow-md hover:bg-[#303030]">
-                    <p className="text-5xl ">ランキング</p>
-                  </Button>
-                </Link>
-              </motion.div>
+            <div className="w-full">
+                <motion.div 
+                  initial={{ x: 0 }}
+                  animate={{ x: 0 }}
+                  transition={{ type:'spring' , duration: 0.5 }}
+                  className="p-24 bg-[url('/image/startmenu.png')] bg-no-repeat mb-10 ml-56"
+                  >
+                  <Link href="/game">                
+                    <button className="h-max">
+                      <p className="text-5xl p-5">スタート</p>
+                    </button>
+                  </Link>
+                </motion.div>
+              <div className="flex">
+                <motion.div 
+                  initial={{ x: 0 }}
+                  animate={{ x: 0 }}
+                  transition={{ type:'spring' , duration: 0.5 }}
+                  className="p-14 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mb-10 ml-20">
+                  <Link href="/mylikes">
+                    <button className="h-max">
+                      <p className="text-4xl p-5">My本棚</p>
+                    </button>
+                  </Link>
+                </motion.div>
+                <motion.div 
+                  initial={{ x: 0 }}
+                  animate={{ x: 0 }}
+                  transition={{ type:'spring' , duration: 0.5 }}
+                  className="p-3 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mt-28 ml-10">
+                  <Link href="/gallery">
+                    <button className="h-max">
+                      <p className="text-2xl p-3">ギャラリー</p>
+                    </button>
+                  </Link>
+                </motion.div>
+                <motion.div 
+                  initial={{ x: 0 }}
+                  animate={{ x: 0 }}
+                  transition={{ type:'spring' , duration: 0.5 }}
+                  className="p-3 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mb-28 ml-7">
+                  <Link href="/rankingPage">
+                    <button className="h-max">
+                      <p className="text-2xl p-3">ランキング</p>
+                    </button>
+                  </Link>
+                </motion.div>
+              </div>
             </div>
           </div>
 

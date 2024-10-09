@@ -132,7 +132,6 @@ const UserBookshelf = () => {
         className="bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
       >
         <div className="flex flex-col min-h-screen">
-          <Header />
           <div className="container mx-auto p-4 flex-grow">
             <h1 className="text-5xl text-white mb-4">
               {userName}さんの本棚
@@ -191,7 +190,6 @@ const UserBookshelf = () => {
               ))}
             </div>
           </div>
-          <Footer />
         </div>
       </div>
     </div>

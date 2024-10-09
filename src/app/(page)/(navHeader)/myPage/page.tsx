@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
-import Header from "@/app/layout/header/header";
-import Footer from "@/app/layout/footer/footer";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 import Loading from "@/app/components/loading";
+import { Crown, GalleryHorizontalEnd, LibraryBig, NotebookPen } from "lucide-react";
 
 type UserData = {
   name: string;
@@ -74,10 +72,8 @@ const MyPage = () => {
     <div>
       <Loading />
       <div className="bg-[url('../../public/image/bg-mypage.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed z-0 relative">
-        <div className="flex flex-col min-h-screen">
-          <Header />
-
-          <div className="container mx-auto p-4 flex-grow items-center flex gap-20">
+        <div className="flex flex-col min-h-[calc(100vh-10rem)]">
+          <div className="container mx-auto p-4 flex-grow items-center justify-center flex gap-20">
             {userData ? (
               <div>
                 <div className="container items-center bg-[url('/image/gamecard.jpg')] rounded-md w-[424px] mx-auto h-[600px]">
@@ -98,7 +94,7 @@ const MyPage = () => {
                   </div>
                   <div className="text-center">
                     <p className="text-white text-2xl mt-6 mb-16">
-                      入場資格 <br /> 当日 23:59まで5回限り有効
+                      本日の残り業務シフト <br /> 5回（0:00AM更新）
                     </p>
                   </div>
                   <div className="h-40 w-[350px] mx-auto">
@@ -132,58 +128,54 @@ const MyPage = () => {
             ) : (
               <div>User data not found.</div>
             )}
-            <div className="w-full">
-                <motion.div 
-                  initial={{ x: 0 }}
-                  animate={{ x: 0 }}
-                  transition={{ type:'spring' , duration: 0.5 }}
-                  className="p-24 bg-[url('/image/startmenu.png')] bg-no-repeat mb-10 ml-56"
-                  >
-                  <Link href="/game">                
-                    <button className="h-max">
-                      <p className="text-5xl p-5">スタート</p>
-                    </button>
-                  </Link>
-                </motion.div>
-              <div className="flex">
-                <motion.div 
-                  initial={{ x: 0 }}
-                  animate={{ x: 0 }}
-                  transition={{ type:'spring' , duration: 0.5 }}
-                  className="p-14 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mb-10 ml-20">
-                  <Link href="/mylikes">
-                    <button className="h-max">
-                      <p className="text-4xl p-5">My本棚</p>
-                    </button>
-                  </Link>
-                </motion.div>
-                <motion.div 
-                  initial={{ x: 0 }}
-                  animate={{ x: 0 }}
-                  transition={{ type:'spring' , duration: 0.5 }}
-                  className="p-3 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mt-28 ml-10">
-                  <Link href="/gallery">
-                    <button className="h-max">
-                      <p className="text-2xl p-3">ギャラリー</p>
-                    </button>
-                  </Link>
-                </motion.div>
-                <motion.div 
-                  initial={{ x: 0 }}
-                  animate={{ x: 0 }}
-                  transition={{ type:'spring' , duration: 0.5 }}
-                  className="p-3 bg-[url('/image/startmenu.png')] bg-cover bg-no-repeat mb-28 ml-7">
-                  <Link href="/rankingPage">
-                    <button className="h-max">
-                      <p className="text-2xl p-3">ランキング</p>
-                    </button>
-                  </Link>
-                </motion.div>
-              </div>
+            <div className="border-[1px] h-[70vh]"></div>
+            <div className="w-[52%] flex flex-col gap-4 text-right">
+              <motion.div
+                animate={{ x: [100, 0], opacity:1, transition: { type: "spring", duration: 0.5, delay:2 } }}
+                whileHover={{scale: 1.1}}
+                className="bg-[url('/image/select2.svg')] bg-contain bg-no-repeat w-[87%]"
+              >
+                <Link href="/game">
+                  <button className="h-max">
+                    <p className="text-5xl p-10 text-white flex items-center gap-4">貸出業務<NotebookPen className="text-5xl size-11"/></p>
+                  </button>
+                </Link>
+              </motion.div>
+              <motion.div
+                animate={{ x: [-100, 0], opacity:1, transition: { type: "spring", duration: 0.5, delay:2 } }}
+                whileHover={{scale: 1.1}}
+                className="bg-[url('/image/select3.svg')] bg-contain bg-no-repeat w-[87%] ml-auto"
+              >
+                <Link href="/mylikes">
+                  <button className="h-max">
+                    <p className="text-5xl p-10 text-white flex items-center gap-4">My本棚<LibraryBig className="text-5xl size-11"/></p>
+                  </button>
+                </Link>
+              </motion.div>
+              <motion.div
+                animate={{ x: [100, 0], opacity:1, transition: { type: "spring", duration: 0.5, delay:2 } }}
+                whileHover={{scale: 1.1}}
+                className="bg-[url('/image/select4.svg')] bg-contain bg-no-repeat w-[87%]"
+              >
+                <Link href="/gallery">
+                  <button className="h-max">
+                    <p className="text-5xl p-10 text-white flex items-center gap-4">ギャラリー<GalleryHorizontalEnd className="text-5xl size-11"/></p>
+                  </button>
+                </Link>
+              </motion.div>
+              <motion.div
+                animate={{ x: [-100, 0], opacity:1, transition: { type: "spring", duration: 0.5, delay:2 } }}
+                whileHover={{scale: 1.1}}
+                className="bg-[url('/image/select5.svg')] bg-contain bg-no-repeat w-[87%] ml-auto"
+              >
+                <Link href="/rankingPage">
+                  <button className="h-max">
+                    <p className="text-5xl p-10 text-white flex items-center gap-4">ランキング<Crown className="text-5xl size-11"/></p>
+                  </button>
+                </Link>
+              </motion.div>
             </div>
           </div>
-
-          <Footer />
         </div>
       </div>
     </div>

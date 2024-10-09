@@ -120,10 +120,10 @@ export default function Home() {
                     height={200}
                     className="mx-auto mb-2 rounded-xl"
                   ></Image>
-                  
+
                   {requestedBook && (
                     <div className="mb-4">
-                      <h2 className="text-xl h-[100px] overflow-y-scroll">
+                      <h2 className="text-xl h-[20%] hidden-scrollbar overflow-y-scroll">
                         利用者No.{users}の希望:
                         <br /> {requestedBook.volumeInfo.title}
                       </h2>
@@ -143,36 +143,14 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-                  <div className="mb-4">
-                    <h2 className="text-xl h-[20%] hidden-scrollbar overflow-y-scroll">
-                      利用者No.{users}の希望:
-                      <br /> 
-                    </h2>
-                    <div className="mt-2 h-[10px]">
-                      {/* メッセージの色を変更 */}
-                      <p
-                        style={{
-                          color:
-                            message === "正しく貸し出せました。" ||
-                            message === "正解！この本は貸出中です！"
-                              ? "green"
-                              : "red",
-                        }}
-                      >
+                  <p className="mb-2 text-xl">返却通知</p>
+                  <div className="h-[35%] overflow-y-scroll hidden-scrollbar">
+                    {returnNotifications.map((notification, index) => (
+                      <p key={index} className="bg-gray-200 p-2 rounded mb-2">
+                        {notification}
                       </p>
-                    </div>
+                    ))}
                   </div>
-                    <p className="mb-2 text-xl">返却通知</p>
-                    <div className="h-[35%] overflow-y-scroll hidden-scrollbar">
-                      {returnNotifications.map((notification, index) => (
-                        <p
-                          key={index}
-                          className="bg-gray-200 p-2 rounded mb-2"
-                        >
-                          {notification}
-                        </p>
-                      ))}
-                    </div>
                 </div>
               </div>
               <div className="h-full w-fit">

@@ -6,8 +6,6 @@ import { db } from "@/lib/firebase/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Book } from "@/../src/types/game";
-import Header from "@/app/layout/header/header";
-import Footer from "@/app/layout/footer/footer";
 import Loading from "@/app/components/loading";
 
 interface User {
@@ -60,7 +58,6 @@ const Gallery = () => {
         className="bg-[url('../../public/image/bg-gallery.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
       >
         <div className="flex flex-col min-h-screen">
-          <Header />
           <div className="container mx-auto p-4 flex-grow">
             <h1 className="text-5xl mb-4 text-white">本棚ギャラリー</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -75,7 +72,6 @@ const Gallery = () => {
               ))}
             </div>
           </div>
-          <Footer />
         </div>
       </div>
     </div>

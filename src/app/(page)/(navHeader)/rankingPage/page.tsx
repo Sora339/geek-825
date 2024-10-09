@@ -104,8 +104,7 @@ const Ranking = () => {
       <div
         className="bg-[url('../../public/image/bg-ranking.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay bg-fixed"
       >
-        <div className="flex flex-col min-h-screen">
-          <Header />
+        <div className="flex flex-col min-h-[calc(100vh-10rem)]">
           <div className="container mx-auto p-4 flex-grow">
             <h1 className="text-5xl text-white mb-4">ランキング</h1>
             <div className="mx-auto h-[700px] w-[570px] pt-24 bg-[url('../../public/image/bg_ranking2.webp')] bg-cover bg-[rgba(0,0,0,0.60)] bg-blend-overlay">
@@ -141,7 +140,6 @@ const Ranking = () => {
               </table>
             </div>
           </div>
-          <Footer />
         </div>
       </div>
     </div>
